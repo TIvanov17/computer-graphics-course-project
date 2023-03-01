@@ -36,13 +36,12 @@ namespace Draw
 		/// Обхващащ правоъгълник на елемента.
 		/// </summary>
 		private RectangleF rectangle;
-
+		
 
 		public virtual RectangleF Rectangle {
 			get { return rectangle; }
 			set { rectangle = value; }
 		}
-		
 
 		public virtual float Width {
 			get { return Rectangle.Width; }

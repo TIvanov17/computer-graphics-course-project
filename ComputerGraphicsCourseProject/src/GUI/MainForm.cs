@@ -141,5 +141,41 @@ namespace Draw
 			dialogProcessor.SetOpaciry(opacityValue.Value);
 			viewPort.Invalidate();
 		}
+
+        private void DrawSquareButtonClick(object sender, EventArgs e)
+        {
+			dialogProcessor.AddRandomSquare(int.Parse(strokeWidthTextBox.Text));
+
+			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
+
+			viewPort.Invalidate();
+		}
+
+        private void DrawEllipseShapeButtonClick(object sender, EventArgs e)
+        {
+			dialogProcessor.AddRandomEllipse(int.Parse(strokeWidthTextBox.Text));
+
+			statusBar.Items[0].Text = "Последно действие: Рисуване на елипса";
+
+			viewPort.Invalidate();
+		}
+
+		private void DrawStarShapeButtonClick(object sender, EventArgs e)
+		{
+			dialogProcessor.AddRandomStar(int.Parse(strokeWidthTextBox.Text));
+
+			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
+
+			viewPort.Invalidate();
+		}
+
+        private void DrawPentagonShapeButtonClick(object sender, EventArgs e)
+        {
+			dialogProcessor.AddRandomPentagon(int.Parse(strokeWidthTextBox.Text));
+
+			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
+
+			viewPort.Invalidate();
+		}
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using Draw.src.Model;
+using Draw.Util;
 
 namespace Draw
 {
@@ -51,9 +53,9 @@ namespace Draw
 		/// <summary>
 		/// Добавя примитив - правоъгълник на произволно място върху клиентската област.
 		/// </summary>
-		public void AddRandomRectangle()
+/*		public void AddRandomRectangle()
 		{
-			Random rnd = new Random();
+			Random rnd = Utility.GetRandomGenerator();
 			int x = rnd.Next(100,1000);
 			int y = rnd.Next(100,600);
 			
@@ -61,11 +63,11 @@ namespace Draw
 			rect.FillColor = Color.White;
 
 			ShapeList.Add(rect);
-		}
+		}*/
 
 		public void AddRandomRectangle(int strokeWidth)
 		{
-			Random rnd = new Random();
+			Random rnd = Utility.GetRandomGenerator();
 			int x = rnd.Next(100, 1000);
 			int y = rnd.Next(100, 600);
 
@@ -74,6 +76,58 @@ namespace Draw
 			rect.StrokeWidth = strokeWidth;
 
 			ShapeList.Add(rect);
+		}
+
+		public void AddRandomSquare(int strokeWidth)
+        {
+			Random rnd = Utility.GetRandomGenerator();
+			int x = rnd.Next(100, 1000);
+			int y = rnd.Next(100, 600);
+
+			SquareShape square = new SquareShape(new Rectangle(x, y, 100, 100));
+			square.FillColor = Color.White;
+			square.StrokeWidth = strokeWidth;
+
+			ShapeList.Add(square);
+		}
+
+		public void AddRandomEllipse(int strokeWidth)
+		{
+			Random rnd = Utility.GetRandomGenerator();
+			int x = rnd.Next(100, 1000);
+			int y = rnd.Next(100, 600);
+
+			EllipseShape ellipse = new EllipseShape(new Rectangle(x, y, 100, 200));
+			ellipse.FillColor = Color.White;
+			ellipse.StrokeWidth = strokeWidth;
+
+			ShapeList.Add(ellipse);
+		}
+
+		public void AddRandomStar(int strokeWidth)
+		{
+			Random rnd = Utility.GetRandomGenerator();
+			int x = rnd.Next(100, 1000);
+			int y = rnd.Next(100, 600);
+
+			TriangleShape star = new TriangleShape(new Rectangle(x, y, 100, 200));
+			star.FillColor = Color.White;
+			star.StrokeWidth = strokeWidth;
+
+			ShapeList.Add(star);
+		}
+
+		public void AddRandomPentagon(int strokeWidth)
+        {
+			Random rnd = Utility.GetRandomGenerator();
+			int x = rnd.Next(100, 1000);
+			int y = rnd.Next(100, 600);
+
+			PentagonShape star = new PentagonShape(new Rectangle(x, y, 100, 200));
+			star.FillColor = Color.White;
+			star.StrokeWidth = strokeWidth;
+
+			ShapeList.Add(star);
 		}
 
 		/// <summary>
@@ -103,9 +157,11 @@ namespace Draw
 		public void TranslateTo(PointF p)
 		{
 			if (selection != null) {
+
 				selection.Location = new PointF
 					(selection.Location.X + p.X - lastLocation.X, 
 					selection.Location.Y + p.Y - lastLocation.Y);
+
 				lastLocation = p;
 			}
 		}
