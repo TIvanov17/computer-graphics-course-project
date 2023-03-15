@@ -20,5 +20,10 @@ namespace Draw.Util
 
             return randomGenerator;
         }
+
+        public static int GenerateRandomNumber(int minValue, int maxValue)
+        {
+            return randomGenerator.Next(minValue, maxValue);
+        }
     }
 }

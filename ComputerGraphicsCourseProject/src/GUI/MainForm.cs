@@ -50,11 +50,8 @@ namespace Draw
 		/// </summary>
 		void DrawRectangleSpeedButtonClick(object sender, EventArgs e)
 		{
-
 			dialogProcessor.AddRandomRectangle(int.Parse(strokeWidthTextBox.Text));
-			
-			statusBar.Items[0].Text = "Последно действие: Рисуване на правоъгълник";
-			
+			statusBar.Items[0].Text = "Последно действие: Рисуване на правоъгълник";	
 			viewPort.Invalidate();
 		}
 
@@ -64,16 +61,29 @@ namespace Draw
 		/// Промяна на статуса и инвалидиране на контрола, в който визуализираме.
 		/// Реализацията се диалогът с потребителя, при който се избира "най-горния" елемент от екрана.
 		/// </summary>
-		void ViewPortMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+		void ViewPortMouseDown(object sender, MouseEventArgs e)
 		{
 			if (pickUpSpeedButton.Checked) {
-				dialogProcessor.Selection = dialogProcessor.ContainsPoint(e.Location);
-				if (dialogProcessor.Selection != null) {
+				
+				Shape currentClickedShape = dialogProcessor.ContainsPoint(e.Location);
+				
+				if (currentClickedShape != null)
+                {
+                    if (dialogProcessor.Selection.Contains(currentClickedShape))
+                    {
+						dialogProcessor.Selection.Remove(currentClickedShape);
+					}
+                    else
+                    {
+						dialogProcessor.Selection.Add(currentClickedShape);
+					}
+
 					statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
 					dialogProcessor.IsDragging = true;
 					dialogProcessor.LastLocation = e.Location;
 					viewPort.Invalidate();
 				}
+
 			}
 		}
 
@@ -81,7 +91,7 @@ namespace Draw
 		/// Прихващане на преместването на мишката.
 		/// Ако сме в режм на "влачене", то избрания елемент се транслира.
 		/// </summary>
-		void ViewPortMouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+		void ViewPortMouseMove(object sender, MouseEventArgs e)
 		{
 			if (dialogProcessor.IsDragging) {
 				if (dialogProcessor.Selection != null) statusBar.Items[0].Text = "Последно действие: Влачене";
@@ -133,49 +143,63 @@ namespace Draw
 				dialogProcessor.SetStrokeWidth(resultStrokeWidthValue);
 				viewPort.Invalidate();
 			}
-
 		}
 
         private void ChangeOpacityValue(object sender, EventArgs e)
         {
-			dialogProcessor.SetOpaciry(opacityValue.Value);
+			dialogProcessor.SetOpacity(opacityValue.Value);
 			viewPort.Invalidate();
 		}
 
         private void DrawSquareButtonClick(object sender, EventArgs e)
         {
 			dialogProcessor.AddRandomSquare(int.Parse(strokeWidthTextBox.Text));
-
 			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
-
 			viewPort.Invalidate();
 		}
 
         private void DrawEllipseShapeButtonClick(object sender, EventArgs e)
         {
 			dialogProcessor.AddRandomEllipse(int.Parse(strokeWidthTextBox.Text));
-
 			statusBar.Items[0].Text = "Последно действие: Рисуване на елипса";
-
 			viewPort.Invalidate();
 		}
 
 		private void DrawStarShapeButtonClick(object sender, EventArgs e)
 		{
 			dialogProcessor.AddRandomStar(int.Parse(strokeWidthTextBox.Text));
-
 			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
-
 			viewPort.Invalidate();
 		}
 
         private void DrawPentagonShapeButtonClick(object sender, EventArgs e)
         {
 			dialogProcessor.AddRandomPentagon(int.Parse(strokeWidthTextBox.Text));
-
 			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
-
 			viewPort.Invalidate();
+		}
+
+        private void RotateShapeButton(object sender, EventArgs e)
+        {
+			dialogProcessor.RotateShape(45);
+			viewPort.Invalidate();
+		}
+
+        private void ScaleShapeButton(object sender, EventArgs e)
+        {
+			dialogProcessor.ScaleShape(1.2f, 1.2f);
+			viewPort.Invalidate();
+		}
+
+        private void DrawGroupShapeButton(object sender, EventArgs e)
+        {
+			if(dialogProcessor.Selection.Count > 1)
+            {
+				dialogProcessor.AddGroupShape(int.Parse(strokeWidthTextBox.Text));
+				//statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
+				viewPort.Invalidate();
+			}
+
 		}
     }
 }

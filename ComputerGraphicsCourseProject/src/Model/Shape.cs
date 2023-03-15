@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Draw
 {
@@ -37,7 +38,6 @@ namespace Draw
 		/// </summary>
 		private RectangleF rectangle;
 		
-
 		public virtual RectangleF Rectangle {
 			get { return rectangle; }
 			set { rectangle = value; }
@@ -85,6 +85,14 @@ namespace Draw
 		{
 			get { return opacityValue; }
 			set { opacityValue = value; }
+		}
+
+		public Matrix transformationMatrix = new Matrix();
+
+		public Matrix TransformationMatrix
+        {
+			get { return transformationMatrix; }
+			set { transformationMatrix = value; }
 		}
 
 		#endregion

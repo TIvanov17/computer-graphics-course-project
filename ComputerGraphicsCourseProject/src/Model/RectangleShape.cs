@@ -22,17 +22,24 @@ namespace Draw
 
 		public override bool Contains(PointF point)
 		{
-			return base.Contains(point);
+			PointF[] pointsArray = { point };
+
+			TransformationMatrix.Invert();
+			TransformationMatrix.TransformPoints(pointsArray);
+			TransformationMatrix.Invert();
+			
+			return base.Contains(pointsArray[0]);
 		}
 		
 		public override void DrawSelf(Graphics grfx)
 		{
 			
 			base.DrawSelf(grfx);
-
 			// set opacity value to current fill color
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
 
+			grfx.Transform = TransformationMatrix;
+			
 			grfx.FillRectangle(
 					new SolidBrush(FillColor), 
 					Rectangle.X, 
