@@ -89,7 +89,7 @@ namespace Draw
 
 		public Matrix transformationMatrix = new Matrix();
 
-		public Matrix TransformationMatrix
+		public virtual Matrix TransformationMatrix
         {
 			get { return transformationMatrix; }
 			set { transformationMatrix = value; }

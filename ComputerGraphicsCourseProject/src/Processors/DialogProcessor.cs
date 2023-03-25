@@ -60,7 +60,18 @@ namespace Draw
 			
 			groupShape.FillColor = Color.White;
 			groupShape.StrokeWidth = strokeWidth;
+
 			groupShape.SubShapes.AddRange(Selection);
+
+			// new addedss
+			Selection = new List<Shape>();
+			Selection.Add(groupShape);
+
+			//on prev this was not remove
+			foreach(Shape item in groupShape.SubShapes)
+            {
+				ShapeList.Remove(item);
+            }
 
 			ShapeList.Add(groupShape);
 		}
@@ -153,6 +164,7 @@ namespace Draw
 
 				foreach (Shape selectedShape in Selection)
                 {
+					
 					selectedShape.TransformationMatrix.Invert();
 					selectedShape.TransformationMatrix.TransformPoints(pointsArray);
 					selectedShape.TransformationMatrix.Invert();
@@ -178,7 +190,7 @@ namespace Draw
 			if (Selection.Count > 0)
 			{
 				foreach(Shape selectedShape in Selection){
-					//grfx.Transform = Selection.TransformationMatrix;
+					
 					grfx.DrawRectangle(
 						dashPen,
 						selectedShape.Location.X - 3,
@@ -240,13 +252,22 @@ namespace Draw
 			{
 				foreach(Shape selectionShape in Selection)
                 {
-					selectionShape.TransformationMatrix.RotateAt(
+
+					float[] element = selectionShape.TransformationMatrix.Elements;
+
+					Matrix newRotatedMatrix = new Matrix(element[0], element[1], 
+														element[2], element[3], 
+														element[4], element[5]);
+
+					newRotatedMatrix.RotateAt(
 						angle,
 						new PointF(
 							selectionShape.Location.X + selectionShape.Width / 2,
 							selectionShape.Location.Y + selectionShape.Height / 2
 						)
 					);
+
+					selectionShape.TransformationMatrix = newRotatedMatrix;
 
 				}
 			}
