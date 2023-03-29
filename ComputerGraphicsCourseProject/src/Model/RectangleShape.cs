@@ -6,7 +6,7 @@ namespace Draw
 	/// <summary>
 	/// Класът правоъгълник е основен примитив, който е наследник на базовия Shape.
 	/// </summary>
-	public class RectangleShape : Shape
+	public class RectangleShape : Shape, ICloneable
 	{
 		#region Constructor
 		
@@ -55,6 +55,12 @@ namespace Draw
 					Rectangle.Width, 
 					Rectangle.Height
 			);
+		}
+
+		public override object Clone()
+		{
+			RectangleShape rectangleShape = new RectangleShape(this);
+			return rectangleShape;
 		}
 	}
 }

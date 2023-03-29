@@ -57,17 +57,13 @@ namespace Draw
         {
 			RectangleF rectangleF = DrawGroupShapeRectangle();
 			GroupShape groupShape = new GroupShape(rectangleF);
-			
-			groupShape.FillColor = Color.White;
 			groupShape.StrokeWidth = strokeWidth;
 
 			groupShape.SubShapes.AddRange(Selection);
 
-			// new addedss
 			Selection = new List<Shape>();
 			Selection.Add(groupShape);
 
-			//on prev this was not remove
 			foreach(Shape item in groupShape.SubShapes)
             {
 				ShapeList.Remove(item);
@@ -76,58 +72,56 @@ namespace Draw
 			ShapeList.Add(groupShape);
 		}
 
+
 		public void AddRandomRectangle(int strokeWidth)
 		{
 			Rectangle rectangle = DrawRectangle(100, 200);
 			RectangleShape rect = new RectangleShape(rectangle);
-			rect.FillColor = Color.White;
 			rect.StrokeWidth = strokeWidth;
-
 			ShapeList.Add(rect);
 		}
 
 		public void AddRandomSquare(int strokeWidth)
 		{
 			Rectangle rectangle = DrawRectangle(100, 100);
-
-			SquareShape square = new SquareShape(rectangle);
-			square.FillColor = Color.White;
+			RectangleShape square = new RectangleShape(rectangle);
 			square.StrokeWidth = strokeWidth;
-
 			ShapeList.Add(square);
 		}
 
 		public void AddRandomEllipse(int strokeWidth)
 		{
 			Rectangle rectangle = DrawRectangle(100, 200);
-
 			EllipseShape ellipse = new EllipseShape(rectangle);
-			ellipse.FillColor = Color.White;
 			ellipse.StrokeWidth = strokeWidth;
 
 			ShapeList.Add(ellipse);
 		}
 
-		public void AddRandomStar(int strokeWidth)
+		public void AddRandomTriangle(int strokeWidth)
 		{
 			Rectangle rectangle = DrawRectangle(100, 200);
-			TriangleShape star = new TriangleShape(rectangle);
-			star.FillColor = Color.White;
-			star.StrokeWidth = strokeWidth;
+			TriangleShape triangle = new TriangleShape(rectangle);
+			triangle.StrokeWidth = strokeWidth;
 
-			ShapeList.Add(star);
+			ShapeList.Add(triangle);
 		}
 
 		public void AddRandomPentagon(int strokeWidth)
 		{
-			Rectangle rectangle = DrawRectangle(100, 200);
+			Rectangle rectangle = DrawRectangle(190, 150);
 			PentagonShape star = new PentagonShape(rectangle);
-			star.FillColor = Color.White;
 			star.StrokeWidth = strokeWidth;
-
 			ShapeList.Add(star);
 		}
 
+		public void AddRandomStar(int strokeWidth)
+		{
+			Rectangle rectangle = DrawRectangle(100, 100);
+			StarShape star = new StarShape(rectangle);
+			star.StrokeWidth = strokeWidth;
+			ShapeList.Add(star);
+		}
 
 		/// <summary>
 		/// Проверява дали дадена точка е в елемента.
@@ -250,25 +244,23 @@ namespace Draw
 		{
 			if (Selection.Count > 0)
 			{
-				foreach(Shape selectionShape in Selection)
+				foreach(Shape selectedShape in Selection)
                 {
 
-					float[] element = selectionShape.TransformationMatrix.Elements;
-
-					Matrix newRotatedMatrix = new Matrix(element[0], element[1], 
-														element[2], element[3], 
-														element[4], element[5]);
-
+					float[] matrixElements = selectedShape.TransformationMatrix.Elements;
+					
+					Matrix newRotatedMatrix = new Matrix(matrixElements[0], matrixElements[1], 
+														matrixElements[2], matrixElements[3], 
+														matrixElements[4], matrixElements[5]);
 					newRotatedMatrix.RotateAt(
 						angle,
 						new PointF(
-							selectionShape.Location.X + selectionShape.Width / 2,
-							selectionShape.Location.Y + selectionShape.Height / 2
+							selectedShape.Location.X + selectedShape.Width / 2,
+							selectedShape.Location.Y + selectedShape.Height / 2
 						)
 					);
 
-					selectionShape.TransformationMatrix = newRotatedMatrix;
-
+					selectedShape.TransformationMatrix = newRotatedMatrix;
 				}
 			}
 		}
@@ -281,8 +273,17 @@ namespace Draw
                 {
 					selectedShape.TransformationMatrix.Scale(scaleFactorX, scaleFactorY);
 				}
-
 			}
+		}
+
+		public void DeleteSelectedShapes()
+		{
+			foreach (Shape shape in Selection)
+			{
+				ShapeList.Remove(shape);
+			}
+
+			Selection.Clear();
 		}
 
 		private RectangleF DrawGroupShapeRectangle()
@@ -323,12 +324,12 @@ namespace Draw
 			return new RectangleF(minX, minY, maxX - minX, maxY - minY);
 		}
 
-		private Rectangle DrawRectangle(int width, int heith)
+		private Rectangle DrawRectangle(int width, int height)
 		{
 			int x = Utility.GenerateRandomNumber(100, 1000);
 			int y = Utility.GenerateRandomNumber(100, 600);
 
-			return new Rectangle(x, y, width, heith);
+			return new Rectangle(x, y, width, height);
 		}
 	}
 }

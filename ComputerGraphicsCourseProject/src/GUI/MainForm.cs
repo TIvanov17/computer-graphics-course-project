@@ -98,6 +98,7 @@ namespace Draw
 				dialogProcessor.TranslateTo(e.Location);
 				viewPort.Invalidate();
 			}
+			mouseCoorinates.Text = "x: " + MousePosition.X + " y: " + MousePosition.Y;
 		}
 
 		/// <summary>
@@ -118,6 +119,7 @@ namespace Draw
         {
 			if (colorDialog2.ShowDialog() == DialogResult.OK)
 			{
+				lastPickedColor.BackColor = colorDialog2.Color;
 				dialogProcessor.SetFillColor(colorDialog2.Color);
 				viewPort.Invalidate();
 			}
@@ -150,8 +152,13 @@ namespace Draw
 			dialogProcessor.SetOpacity(opacityValue.Value);
 			viewPort.Invalidate();
 		}
-
-        private void DrawSquareButtonClick(object sender, EventArgs e)
+		private void DrawStarShapeButton(object sender, EventArgs e)
+		{
+			dialogProcessor.AddRandomStar(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
+			viewPort.Invalidate();
+		}
+		private void DrawSquareButtonClick(object sender, EventArgs e)
         {
 			dialogProcessor.AddRandomSquare(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
@@ -165,13 +172,6 @@ namespace Draw
 			viewPort.Invalidate();
 		}
 
-		private void DrawStarShapeButtonClick(object sender, EventArgs e)
-		{
-			dialogProcessor.AddRandomStar(int.Parse(strokeWidthTextBox.Text));
-			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
-			viewPort.Invalidate();
-		}
-
         private void DrawPentagonShapeButtonClick(object sender, EventArgs e)
         {
 			dialogProcessor.AddRandomPentagon(int.Parse(strokeWidthTextBox.Text));
@@ -182,12 +182,14 @@ namespace Draw
         private void RotateShapeButton(object sender, EventArgs e)
         {
 			dialogProcessor.RotateShape(45);
+			statusBar.Items[0].Text = "Последно действие: Ротация на фигура";
 			viewPort.Invalidate();
 		}
 
         private void ScaleShapeButton(object sender, EventArgs e)
         {
 			dialogProcessor.ScaleShape(1.2f, 1.2f);
+			statusBar.Items[0].Text = "Последно действие: Мащабиране на фигура";
 			viewPort.Invalidate();
 		}
 
@@ -195,11 +197,100 @@ namespace Draw
         {
 			if(dialogProcessor.Selection.Count > 1)
             {
+
 				dialogProcessor.AddGroupShape(int.Parse(strokeWidthTextBox.Text));
-				//statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
+				statusBar.Items[0].Text = "Последно действие: " +
+					"Създаване на група от селектираните фигури";
 				viewPort.Invalidate();
+			}
+		}
+
+        private void DrawTriangleShapeButtonClick(object sender, EventArgs e)
+        {
+			dialogProcessor.AddRandomTriangle(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
+			viewPort.Invalidate();
+		}
+
+
+        private void ViewPortKeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.Control == true && e.KeyCode == Keys.G && e.Shift == false)
+            {
+				dialogProcessor.AddGroupShape(int.Parse(strokeWidthTextBox.Text));
+				viewPort.Invalidate();
+				return;
+            }
+
+			if (e.Control == true && e.KeyCode == Keys.G && e.Shift == true)
+            {
+				// TODO ungroup
+            }
+
+			if (e.Control == true && e.KeyCode == Keys.C)
+			{
+				foreach(Shape shape in dialogProcessor.Selection)
+                {
+					Shape copyShape = (Shape)shape.Clone();
+					dialogProcessor.ShapeList.Add(copyShape);
+                }
+				viewPort.Invalidate();
+				return;
+			}
+
+			if (e.Control == true && e.KeyCode == Keys.V)
+			{
+				
 			}
 
 		}
-    }
+
+        private void ContextOpening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+			contextMenuStrip1.Items.Clear();		
+			if(dialogProcessor.Selection.Count > 0)
+            {	
+				contextMenuStrip1.Items.Add("Rotate Shape", null, new EventHandler(RotateShapeButton));
+				contextMenuStrip1.Items.Add("Delete", null, new EventHandler(DeleteShapeButtonClick));
+			}
+
+			AddNewShapeOptions();
+
+			// TODO: Shape Manipulations
+
+		}
+
+		private void AddNewShapeOptions()
+        {
+			contextMenuStrip1.Items.Add("New Rectangle", null,
+				new EventHandler(DrawRectangleSpeedButtonClick));
+
+			contextMenuStrip1.Items.Add("New Square", null,
+				new EventHandler(DrawSquareButtonClick));
+
+			contextMenuStrip1.Items.Add("New Ellipse", null,
+				new EventHandler(DrawEllipseShapeButtonClick));
+
+			contextMenuStrip1.Items.Add("New Triangle", null,
+				new EventHandler(DrawTriangleShapeButtonClick));
+
+			contextMenuStrip1.Items.Add("New Pentagon", null,
+				new EventHandler(DrawPentagonShapeButtonClick));
+
+			contextMenuStrip1.Items.Add("New Star", null,
+				new EventHandler(DrawStarShapeButton));
+		}
+
+		private void DeleteShapeButtonClick(object sender, EventArgs e)
+		{
+			if (dialogProcessor.Selection.Count > 0)
+			{
+				dialogProcessor.DeleteSelectedShapes();
+				viewPort.Invalidate();
+			}
+		}
+
+
+	}
 }

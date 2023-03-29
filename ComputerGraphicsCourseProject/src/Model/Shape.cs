@@ -4,10 +4,15 @@ using System.Drawing.Drawing2D;
 
 namespace Draw
 {
+
+	// binary format file stream save, wrapper of matrix
+	// file stream, binary, deserialize cast to shape list
+
 	/// <summary>
 	/// Базовия клас на примитивите, който съдържа общите характеристики на примитивите.
 	/// </summary>
-	public abstract class Shape
+	[Serializable]
+	public abstract class Shape : ICloneable
 	{
 		#region Constructors
 		
@@ -22,12 +27,11 @@ namespace Draw
 		
 		public Shape(Shape shape)
 		{
-			this.Height = shape.Height;
-			this.Width = shape.Width;
-			this.Location = shape.Location;
-			this.rectangle = shape.rectangle;
-			
-			this.FillColor =  shape.FillColor;
+			Height = shape.Height;
+			Width = shape.Width;
+			Location = shape.Location;
+			rectangle = shape.rectangle;
+			FillColor =  shape.FillColor;
 		}
 		#endregion
 		
@@ -58,7 +62,7 @@ namespace Draw
 			set { rectangle.Location = value; }
 		}
 
-		private Color fillColor;		
+		private Color fillColor = Color.White;		
 		public virtual Color FillColor {
 			get { return fillColor; }
 			set { fillColor = value; }
@@ -66,7 +70,7 @@ namespace Draw
 
 		private Color strokeColor = Color.Black;
 
-		public virtual Color StrokeColor{
+		public virtual Color StrokeColor {
 			get { return strokeColor; }
 			set { strokeColor = value; }
 		}
@@ -106,6 +110,7 @@ namespace Draw
 		{
 			// shape.Rectangle.Inflate(shape.BorderWidth, shape.BorderWidth);
 		}
-		
-	}
+
+        public abstract object Clone();
+    }
 }

@@ -11,8 +11,10 @@ namespace Draw
 		public List<Shape> SubShapes = new List<Shape>();
 
 		// TODO: rest of every functionality
-
-
+		public override object Clone()
+		{
+			throw new System.NotImplementedException();
+		}
 		public override Matrix TransformationMatrix
 		{
 			get => base.TransformationMatrix;
@@ -62,7 +64,6 @@ namespace Draw
 				}
 			}
 		}
-
 
 		public override PointF Location
 		{
@@ -122,5 +123,7 @@ namespace Draw
 			}
 
 		}
+
+
 	}
 }

@@ -14,6 +14,10 @@ namespace Draw.src.Model
 		{
 		}
 
+		public override object Clone()
+		{
+			throw new NotImplementedException();
+		}
 
 		public override bool Contains(PointF point)
 		{

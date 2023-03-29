@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Draw.src.Model
 {
@@ -12,36 +10,19 @@ namespace Draw.src.Model
 		{
 		}
 
-		public TriangleShape(TriangleShape star) : base(star)
+		public TriangleShape(TriangleShape triangle) : base(triangle)
 		{
 		}
 
 
-		public override bool Contains(PointF point)
+        public override bool Contains(PointF point)
 		{
-
-/*			float userClickX = point.X;
-			float userClickY = point.Y;
-
-			for(int index = 0; index < points.Length - 1; index++)
-            {
-				PointF currentPoint = points[index];
-				PointF nextPoint = points[index + 1];
-
-				double result = Math.Atan2(currentPoint.Y - point.Y, currentPoint.X - point.X) - 
-					Math.Atan2(nextPoint.Y - point.Y, nextPoint.X - point.X);
-
-			}
-			*//*		float centerX = startRectangleX */
 			return base.Contains(point);
 		}
 
 		public override void DrawSelf(Graphics grfx)
 		{
-
 			base.DrawSelf(grfx);
-
-			
 
 			int currentX = (int) Rectangle.X;
 			int currentY = (int) Rectangle.Y;
@@ -50,7 +31,6 @@ namespace Draw.src.Model
 			points[1] = new Point(currentX + 50, currentY + 100);
 			points[2] = new Point(currentX + 100, currentY + 0);
 
-			// set opacity value to current fill color
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
 
 			grfx.FillPolygon(
@@ -63,5 +43,11 @@ namespace Draw.src.Model
 					points
 			);
 		}
+
+		public override object Clone()
+		{
+			throw new System.NotImplementedException();
+		}
+
 	}
 }

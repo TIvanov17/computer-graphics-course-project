@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
+
 
 namespace Draw.src.Model
 {
@@ -17,6 +13,10 @@ namespace Draw.src.Model
 		{
 		}
 
+		public override object Clone()
+		{
+			throw new System.NotImplementedException();
+		}
 
 		public override bool Contains(PointF point)
 		{
@@ -34,13 +34,12 @@ namespace Draw.src.Model
 			int currentX = (int)Rectangle.X;
 			int currentY = (int)Rectangle.Y;
 
-			points[0] = new Point(currentX, currentY);
-			points[1] = new Point(currentX - 25, currentY + 50);
-			points[2] = new Point(currentX + 50, currentY + 100);
-			points[3] = new Point(currentX + 100, currentY + 50);
-			points[4] = new Point(currentX + 75, currentY + 0);
+			points[0] = new Point(currentX, currentY + 75);
+			points[1] = new Point(currentX + 50, currentY + 150);
+			points[2] = new Point(currentX + 140, currentY + 150);
+			points[3] = new Point(currentX + 190, currentY + 75);
+			points[4] = new Point(currentX + 95, currentY);
 
-			// set opacity value to current fill color
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
 
 			grfx.FillPolygon(
