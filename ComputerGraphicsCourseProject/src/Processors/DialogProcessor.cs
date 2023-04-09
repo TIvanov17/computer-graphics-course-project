@@ -31,6 +31,13 @@ namespace Draw
 			set { selectedShapesCollection = value; }
 		}
 
+		private ISet<Shape> copyOfSelectedShapes = new HashSet<Shape>();
+
+		public ISet<Shape> CopyOfSelectedShapes
+		{
+			get { return copyOfSelectedShapes; }
+			set { copyOfSelectedShapes = value; }
+		}
 
 		/// <summary>
 		/// Дали в момента диалога е в състояние на "влачене" на избрания елемент.
@@ -298,6 +305,25 @@ namespace Draw
 				ShapeList.Remove(shape);
 				ShapeList.AddRange(subShapesCollection);
 			}
+		}
+
+		public void CopyShapes()
+        {
+			CopyOfSelectedShapes.Clear();
+			foreach (Shape shape in SelectedShapesCollection)
+			{
+				Shape copyOfCurrentShape = (Shape)shape.Clone();
+				CopyOfSelectedShapes.Add(copyOfCurrentShape);
+			}
+		}
+
+		public void PasteShapes()
+        {
+			foreach (Shape shape in CopyOfSelectedShapes)
+			{
+				Shape newFreshShapeOfCopiedOne = (Shape)shape.Clone();
+				ShapeList.Add(newFreshShapeOfCopiedOne);
+			}	
 		}
 
 		private RectangleF DrawGroupShapeRectangle()

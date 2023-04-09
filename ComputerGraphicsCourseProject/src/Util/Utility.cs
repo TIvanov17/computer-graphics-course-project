@@ -13,15 +13,5 @@ namespace Draw.Util
         {
             return randomGenerator.Next(minValue, maxValue);
         }
-
-        public static bool IsGroupShapesKeyCombinationClicked(KeyEventArgs e)
-        {
-            return e.Control == true && e.KeyCode == Keys.G && e.Shift == false;
-        }
-
-        public static bool IsUngroupShapesKeyCombinationClicked(KeyEventArgs e)
-        {
-            return e.Control == true && e.KeyCode == Keys.G && e.Shift == true;
-        }
     }
 }

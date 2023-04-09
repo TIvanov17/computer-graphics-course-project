@@ -10,11 +10,6 @@ namespace Draw
 	{
 		public List<Shape> SubShapes = new List<Shape>();
 
-		// TODO: rest of every functionality
-		public override object Clone()
-		{
-			throw new System.NotImplementedException();
-		}
 		public override Matrix TransformationMatrix
 		{
 			get => base.TransformationMatrix;
@@ -88,18 +83,31 @@ namespace Draw
             }
 		}
 
-		#region Constructor
+        public override int OpacityValue
+		{
+			get => base.OpacityValue;
 
-		public GroupShape(RectangleF rect) : base(rect)
+			set
+			{
+				foreach (Shape currentSubShape in SubShapes)
+				{
+					currentSubShape.OpacityValue = value;
+				}
+			}
+		}
+
+        #region Constructor
+
+        public GroupShape(RectangleF rect) : base(rect)
 		{
 			ShapeType = Type.GROUP;
 		}
-		
+
 		public GroupShape(GroupShape groupShape) : base(groupShape)
 		{
 			ShapeType = Type.GROUP;
 		}
-		
+
 		#endregion
 
 		public override bool Contains(PointF point)
@@ -126,6 +134,15 @@ namespace Draw
 
 		}
 
+		public override object Clone()
+		{
+			GroupShape groupShape = new GroupShape(this);
+			foreach(Shape subShape in this.SubShapes)
+            {
+				groupShape.SubShapes.Add((Shape)subShape.Clone());
+            }
 
+			return groupShape;
+		}
 	}
 }

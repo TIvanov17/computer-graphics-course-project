@@ -1,4 +1,5 @@
-﻿using Draw.Util;
+﻿using Draw.src.Util;
+using Draw.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -215,40 +216,33 @@ namespace Draw
 			viewPort.Invalidate();
 		}
 
-		private bool IsGroupShapesKeyCombinationClicked(KeyEventArgs e)
-        {
-			return e.Control == true && e.KeyCode == Keys.G && e.Shift == false;
-        }
-
         private void ViewPortKeyDown(object sender, KeyEventArgs e)
         {
 
-            if (Utility.IsGroupShapesKeyCombinationClicked(e))
+            if (Commands.IsCreateGroupShapesCommandClicked(e))
             {
 				DrawGroupShapeButton(sender, e);
 				return;
             }
 
-			if (Utility.IsUngroupShapesKeyCombinationClicked(e))
+			if (Commands.IsUngroupShapesCommandClicked(e))
             {
 				UnGroupSelectedShapesButtonClick(sender, e);
 				return;
 			}
 
-			if (e.Control == true && e.KeyCode == Keys.C)
+			if (Commands.IsCopySelectedShapesCommandClicked(e))
 			{
-				foreach(Shape shape in dialogProcessor.SelectedShapesCollection)
-                {
-					Shape copyShape = (Shape)shape.Clone();
-					dialogProcessor.ShapeList.Add(copyShape);
-                }
+				dialogProcessor.CopyShapes();
 				viewPort.Invalidate();
 				return;
 			}
 
-			if (e.Control == true && e.KeyCode == Keys.V)
+			if (Commands.IsPasteSelectedShapesCommandClicked(e)
+				&& dialogProcessor.CopyOfSelectedShapes.Count > 0)
 			{
-				
+				dialogProcessor.PasteShapes();
+				viewPort.Invalidate();
 			}
 
 		}
@@ -274,33 +268,17 @@ namespace Draw
             {	
 				contextMenuStrip1.Items.Add("Rotate Shape", null, new EventHandler(RotateShapeButton));
 				contextMenuStrip1.Items.Add("Delete", null, new EventHandler(DeleteShapeButtonClick));
+				contextMenuStrip1.Items.Add("Copy", null, new EventHandler(CopyShapesButtonClicked));
+			}
+			if(dialogProcessor.CopyOfSelectedShapes.Count > 0)
+            {
+				contextMenuStrip1.Items.Add("Paste", null, new EventHandler(PasteShapesButtonClicked));
 			}
 
 			AddNewShapeOptions();
 
 			// TODO: Shape Manipulations
 
-		}
-
-		private void AddNewShapeOptions()
-        {
-			contextMenuStrip1.Items.Add("New Rectangle", null,
-				new EventHandler(DrawRectangleSpeedButtonClick));
-
-			contextMenuStrip1.Items.Add("New Square", null,
-				new EventHandler(DrawSquareButtonClick));
-
-			contextMenuStrip1.Items.Add("New Ellipse", null,
-				new EventHandler(DrawEllipseShapeButtonClick));
-
-			contextMenuStrip1.Items.Add("New Triangle", null,
-				new EventHandler(DrawTriangleShapeButtonClick));
-
-			contextMenuStrip1.Items.Add("New Pentagon", null,
-				new EventHandler(DrawPentagonShapeButtonClick));
-
-			contextMenuStrip1.Items.Add("New Star", null,
-				new EventHandler(DrawStarShapeButton));
 		}
 
 		private void DeleteShapeButtonClick(object sender, EventArgs e)
@@ -323,7 +301,45 @@ namespace Draw
 				dialogProcessor.UngroupSelectedShapes(groupShapes);
 				viewPort.Invalidate();
 			}
+		}
 
+		private void AddNewShapeOptions()
+		{
+			contextMenuStrip1.Items.Add("New Rectangle", null,
+				new EventHandler(DrawRectangleSpeedButtonClick));
+
+			contextMenuStrip1.Items.Add("New Square", null,
+				new EventHandler(DrawSquareButtonClick));
+
+			contextMenuStrip1.Items.Add("New Ellipse", null,
+				new EventHandler(DrawEllipseShapeButtonClick));
+
+			contextMenuStrip1.Items.Add("New Triangle", null,
+				new EventHandler(DrawTriangleShapeButtonClick));
+
+			contextMenuStrip1.Items.Add("New Pentagon", null,
+				new EventHandler(DrawPentagonShapeButtonClick));
+
+			contextMenuStrip1.Items.Add("New Star", null,
+				new EventHandler(DrawStarShapeButton));
+		}
+
+        private void CopyShapesButtonClicked(object sender, EventArgs e)
+        {
+			if (dialogProcessor.SelectedShapesCollection.Count > 0)
+			{
+				dialogProcessor.CopyShapes();
+				viewPort.Invalidate();
+			}
+		}
+
+        private void PasteShapesButtonClicked(object sender, EventArgs e)
+        {
+			if (dialogProcessor.CopyOfSelectedShapes.Count > 0)
+			{
+				dialogProcessor.PasteShapes();
+				viewPort.Invalidate();
+			}
 		}
     }
 }

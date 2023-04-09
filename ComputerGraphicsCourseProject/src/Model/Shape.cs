@@ -32,11 +32,15 @@ namespace Draw
 		
 		public Shape(Shape shape)
 		{
-			rectangle = shape.rectangle;
+			Rectangle = shape.Rectangle;
 			Height = shape.Height;
 			Width = shape.Width;
 			Location = shape.Location;
 			FillColor =  shape.FillColor;
+			StrokeColor = shape.StrokeColor;
+			StrokeWidth = shape.StrokeWidth;
+			OpacityValue = shape.OpacityValue;
+			TransformationMatrix = shape.TransformationMatrix;
 		}
 		#endregion
 		

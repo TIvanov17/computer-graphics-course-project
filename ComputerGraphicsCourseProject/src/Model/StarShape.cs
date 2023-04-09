@@ -52,7 +52,7 @@ namespace Draw.src.Model
 
 		public override object Clone()
 		{
-			throw new System.NotImplementedException();
+			return new StarShape(this);
 		}
 
 

@@ -6,7 +6,7 @@ namespace Draw
 	/// <summary>
 	/// Класът правоъгълник е основен примитив, който е наследник на базовия Shape.
 	/// </summary>
-	public class RectangleShape : Shape, ICloneable
+	public class RectangleShape : Shape
 	{
 		#region Constructor
 		
@@ -37,7 +37,6 @@ namespace Draw
 			base.DrawSelf(grfx);
 			// set opacity value to current fill color
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
-
 			grfx.Transform = TransformationMatrix;
 			
 			grfx.FillRectangle(
@@ -59,8 +58,7 @@ namespace Draw
 
 		public override object Clone()
 		{
-			RectangleShape rectangleShape = new RectangleShape(this);
-			return rectangleShape;
+			return new RectangleShape(this);
 		}
 	}
 }

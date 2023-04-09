@@ -9,13 +9,8 @@ namespace Draw.src.Model
 		{
 		}
 
-		public PentagonShape(TriangleShape star) : base(star)
+		public PentagonShape(PentagonShape star) : base(star)
 		{
-		}
-
-		public override object Clone()
-		{
-			throw new System.NotImplementedException();
 		}
 
 		public override bool Contains(PointF point)
@@ -52,5 +47,11 @@ namespace Draw.src.Model
 					points
 			);
 		}
+
+		public override object Clone()
+		{
+			return new PentagonShape(this);
+		}
+
 	}
 }

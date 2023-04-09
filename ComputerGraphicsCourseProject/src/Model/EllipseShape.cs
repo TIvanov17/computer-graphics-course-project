@@ -14,11 +14,6 @@ namespace Draw.src.Model
 		{
 		}
 
-		public override object Clone()
-		{
-			throw new NotImplementedException();
-		}
-
 		public override bool Contains(PointF point)
 		{
 			float width = Rectangle.Width / 2;
@@ -57,5 +52,10 @@ namespace Draw.src.Model
 					Rectangle.Height
 			);
 		}
+		public override object Clone()
+		{
+			return new EllipseShape(this);
+		}
+
 	}
 }
