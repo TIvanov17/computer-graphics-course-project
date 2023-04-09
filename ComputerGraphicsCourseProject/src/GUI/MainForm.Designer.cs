@@ -55,7 +55,7 @@
             this.rotateShapeSpeedButton = new System.Windows.Forms.ToolStripButton();
             this.scaleShapeSpeedButton = new System.Windows.Forms.ToolStripButton();
             this.drawGroupSpeedButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.unGroupSelectedShapes = new System.Windows.Forms.ToolStripButton();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.colorDialog2 = new System.Windows.Forms.ColorDialog();
             this.strokeWidthTextBox = new System.Windows.Forms.TextBox();
@@ -177,7 +177,7 @@
             this.rotateShapeSpeedButton,
             this.scaleShapeSpeedButton,
             this.drawGroupSpeedButton,
-            this.toolStripButton1});
+            this.unGroupSelectedShapes});
             this.speedMenu.Location = new System.Drawing.Point(0, 24);
             this.speedMenu.Name = "speedMenu";
             this.speedMenu.Size = new System.Drawing.Size(693, 25);
@@ -304,10 +304,15 @@
             this.drawGroupSpeedButton.Text = "Group Selected Shapes";
             this.drawGroupSpeedButton.Click += new System.EventHandler(this.DrawGroupShapeButton);
             // 
-            // toolStripButton1
+            // unGroupSelectedShapes
             // 
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.unGroupSelectedShapes.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.unGroupSelectedShapes.Image = ((System.Drawing.Image)(resources.GetObject("unGroupSelectedShapes.Image")));
+            this.unGroupSelectedShapes.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.unGroupSelectedShapes.Name = "unGroupSelectedShapes";
+            this.unGroupSelectedShapes.Size = new System.Drawing.Size(23, 22);
+            this.unGroupSelectedShapes.Text = "Ungroup Selected Shapes";
+            this.unGroupSelectedShapes.Click += new System.EventHandler(this.UnGroupSelectedShapesButtonClick);
             // 
             // strokeWidthTextBox
             // 
@@ -422,12 +427,12 @@
         private System.Windows.Forms.ToolStripButton rotateShapeSpeedButton;
         private System.Windows.Forms.ToolStripButton scaleShapeSpeedButton;
         private System.Windows.Forms.ToolStripButton drawGroupSpeedButton;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem dsooToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton starShapeButton;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.Label mouseCoorinates;
         private System.Windows.Forms.Button lastPickedColor;
+        private System.Windows.Forms.ToolStripButton unGroupSelectedShapes;
     }
 }

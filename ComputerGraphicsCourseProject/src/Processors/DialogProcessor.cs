@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using Draw.src.Model;
 using Draw.Util;
 
@@ -22,13 +23,14 @@ namespace Draw
 
 		#region Properties
 		
-		private List<Shape> selection = new List<Shape>();
+		private List<Shape> selectedShapesCollection = new List<Shape>();
 
-		public List<Shape> Selection
+		public List<Shape> SelectedShapesCollection
 		{
-			get { return selection; }
-			set { selection = value; }
+			get { return selectedShapesCollection; }
+			set { selectedShapesCollection = value; }
 		}
+
 
 		/// <summary>
 		/// Дали в момента диалога е в състояние на "влачене" на избрания елемент.
@@ -59,10 +61,10 @@ namespace Draw
 			GroupShape groupShape = new GroupShape(rectangleF);
 			groupShape.StrokeWidth = strokeWidth;
 
-			groupShape.SubShapes.AddRange(Selection);
+			groupShape.SubShapes.AddRange(SelectedShapesCollection);
 
-			Selection = new List<Shape>();
-			Selection.Add(groupShape);
+			SelectedShapesCollection = new List<Shape>();
+			SelectedShapesCollection.Add(groupShape);
 
 			foreach(Shape item in groupShape.SubShapes)
             {
@@ -152,11 +154,11 @@ namespace Draw
 		/// <param name="p">Вектор на транслация.</param>
 		public void TranslateTo(PointF p)
 		{
-			if (selection.Count > 0)
+			if (selectedShapesCollection.Count > 0)
 			{
 				PointF[] pointsArray = { p };
 
-				foreach (Shape selectedShape in Selection)
+				foreach (Shape selectedShape in SelectedShapesCollection)
                 {
 					
 					selectedShape.TransformationMatrix.Invert();
@@ -181,9 +183,9 @@ namespace Draw
 			Pen dashPen = new Pen(Color.Black, 2);
 			dashPen.DashPattern = dashValues;
 
-			if (Selection.Count > 0)
+			if (SelectedShapesCollection.Count > 0)
 			{
-				foreach(Shape selectedShape in Selection){
+				foreach(Shape selectedShape in SelectedShapesCollection){
 					
 					grfx.DrawRectangle(
 						dashPen,
@@ -199,9 +201,9 @@ namespace Draw
 
 		public void SetStrokeColor(Color color)
 		{
-			if (Selection.Count > 0)
+			if (SelectedShapesCollection.Count > 0)
 			{
-				foreach(Shape selectedShape in Selection)
+				foreach(Shape selectedShape in SelectedShapesCollection)
                 {
 					selectedShape.StrokeColor = color;
 				}
@@ -210,9 +212,9 @@ namespace Draw
 
 		public void SetFillColor(Color color)
 		{
-			if (Selection.Count > 0)
+			if (SelectedShapesCollection.Count > 0)
 			{
-				foreach (Shape selectedShape in Selection) { 
+				foreach (Shape selectedShape in SelectedShapesCollection) { 
 					selectedShape.FillColor = color;
 				}
 			}
@@ -220,9 +222,9 @@ namespace Draw
 
 		public void SetStrokeWidth(int strokeWidth)
 		{
-			if (Selection.Count > 0)
+			if (SelectedShapesCollection.Count > 0)
 			{
-				foreach(Shape selectedShape in Selection)
+				foreach(Shape selectedShape in SelectedShapesCollection)
                 {
 					selectedShape.StrokeWidth = strokeWidth;
 				}
@@ -231,9 +233,9 @@ namespace Draw
 
 		public void SetOpacity(int opacityValue)
 		{
-			if (Selection.Count > 0)
+			if (SelectedShapesCollection.Count > 0)
 			{
-				foreach(Shape selectedShape in Selection)
+				foreach(Shape selectedShape in SelectedShapesCollection)
                 {
 					selectedShape.OpacityValue = opacityValue;
 				}
@@ -242,9 +244,9 @@ namespace Draw
 
 		public void RotateShape(int angle)
 		{
-			if (Selection.Count > 0)
+			if (SelectedShapesCollection.Count > 0)
 			{
-				foreach(Shape selectedShape in Selection)
+				foreach(Shape selectedShape in SelectedShapesCollection)
                 {
 
 					float[] matrixElements = selectedShape.TransformationMatrix.Elements;
@@ -267,9 +269,9 @@ namespace Draw
 
 		public void ScaleShape(float scaleFactorX, float scaleFactorY)
 		{
-			if (Selection.Count > 0)
+			if (SelectedShapesCollection.Count > 0)
 			{
-				foreach (Shape selectedShape in Selection)
+				foreach (Shape selectedShape in SelectedShapesCollection)
                 {
 					selectedShape.TransformationMatrix.Scale(scaleFactorX, scaleFactorY);
 				}
@@ -278,12 +280,24 @@ namespace Draw
 
 		public void DeleteSelectedShapes()
 		{
-			foreach (Shape shape in Selection)
+			foreach (Shape shape in SelectedShapesCollection)
 			{
 				ShapeList.Remove(shape);
 			}
 
-			Selection.Clear();
+			SelectedShapesCollection.Clear();
+		}
+
+
+		public void UngroupSelectedShapes(List<Shape> groupShapes)
+		{
+			foreach (Shape shape in groupShapes)
+			{
+				SelectedShapesCollection.Remove(shape);
+				List<Shape> subShapesCollection = ((GroupShape)shape).SubShapes;
+				ShapeList.Remove(shape);
+				ShapeList.AddRange(subShapesCollection);
+			}
 		}
 
 		private RectangleF DrawGroupShapeRectangle()
@@ -294,7 +308,7 @@ namespace Draw
 			float maxX = float.MinValue;
 			float maxY = float.MinValue;
 
-			foreach (Shape shape in Selection)
+			foreach (Shape shape in SelectedShapesCollection)
 			{
 
 				float currentX = shape.Location.X + shape.Width;
@@ -331,5 +345,6 @@ namespace Draw
 
 			return new Rectangle(x, y, width, height);
 		}
+
 	}
 }

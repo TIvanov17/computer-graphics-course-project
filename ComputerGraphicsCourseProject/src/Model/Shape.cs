@@ -14,6 +14,11 @@ namespace Draw
 	[Serializable]
 	public abstract class Shape : ICloneable
 	{
+		public enum Type
+        {
+			GROUP, SINGLE
+        }
+
 		#region Constructors
 		
 		public Shape()
@@ -27,10 +32,10 @@ namespace Draw
 		
 		public Shape(Shape shape)
 		{
+			rectangle = shape.rectangle;
 			Height = shape.Height;
 			Width = shape.Width;
 			Location = shape.Location;
-			rectangle = shape.rectangle;
 			FillColor =  shape.FillColor;
 		}
 		#endregion
@@ -45,6 +50,13 @@ namespace Draw
 		public virtual RectangleF Rectangle {
 			get { return rectangle; }
 			set { rectangle = value; }
+		}
+
+		private Type shapeType = Type.SINGLE;
+		public virtual Type ShapeType
+		{
+			get { return shapeType; }
+			protected set { shapeType = value; }
 		}
 
 		public virtual float Width {

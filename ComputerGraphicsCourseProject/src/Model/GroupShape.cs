@@ -92,10 +92,12 @@ namespace Draw
 
 		public GroupShape(RectangleF rect) : base(rect)
 		{
+			ShapeType = Type.GROUP;
 		}
 		
 		public GroupShape(GroupShape groupShape) : base(groupShape)
 		{
+			ShapeType = Type.GROUP;
 		}
 		
 		#endregion

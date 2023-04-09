@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Draw.Util;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Draw
@@ -69,13 +71,13 @@ namespace Draw
 				
 				if (currentClickedShape != null)
                 {
-                    if (dialogProcessor.Selection.Contains(currentClickedShape))
+                    if (dialogProcessor.SelectedShapesCollection.Contains(currentClickedShape))
                     {
-						dialogProcessor.Selection.Remove(currentClickedShape);
+						dialogProcessor.SelectedShapesCollection.Remove(currentClickedShape);
 					}
                     else
                     {
-						dialogProcessor.Selection.Add(currentClickedShape);
+						dialogProcessor.SelectedShapesCollection.Add(currentClickedShape);
 					}
 
 					statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
@@ -94,7 +96,7 @@ namespace Draw
 		void ViewPortMouseMove(object sender, MouseEventArgs e)
 		{
 			if (dialogProcessor.IsDragging) {
-				if (dialogProcessor.Selection != null) statusBar.Items[0].Text = "Последно действие: Влачене";
+				if (dialogProcessor.SelectedShapesCollection != null) statusBar.Items[0].Text = "Последно действие: Влачене";
 				dialogProcessor.TranslateTo(e.Location);
 				viewPort.Invalidate();
 			}
@@ -152,12 +154,14 @@ namespace Draw
 			dialogProcessor.SetOpacity(opacityValue.Value);
 			viewPort.Invalidate();
 		}
+
 		private void DrawStarShapeButton(object sender, EventArgs e)
 		{
 			dialogProcessor.AddRandomStar(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
 			viewPort.Invalidate();
 		}
+
 		private void DrawSquareButtonClick(object sender, EventArgs e)
         {
 			dialogProcessor.AddRandomSquare(int.Parse(strokeWidthTextBox.Text));
@@ -195,9 +199,8 @@ namespace Draw
 
         private void DrawGroupShapeButton(object sender, EventArgs e)
         {
-			if(dialogProcessor.Selection.Count > 1)
+			if(dialogProcessor.SelectedShapesCollection.Count > 1)
             {
-
 				dialogProcessor.AddGroupShape(int.Parse(strokeWidthTextBox.Text));
 				statusBar.Items[0].Text = "Последно действие: " +
 					"Създаване на група от селектираните фигури";
@@ -212,25 +215,29 @@ namespace Draw
 			viewPort.Invalidate();
 		}
 
+		private bool IsGroupShapesKeyCombinationClicked(KeyEventArgs e)
+        {
+			return e.Control == true && e.KeyCode == Keys.G && e.Shift == false;
+        }
 
         private void ViewPortKeyDown(object sender, KeyEventArgs e)
         {
 
-            if (e.Control == true && e.KeyCode == Keys.G && e.Shift == false)
+            if (Utility.IsGroupShapesKeyCombinationClicked(e))
             {
-				dialogProcessor.AddGroupShape(int.Parse(strokeWidthTextBox.Text));
-				viewPort.Invalidate();
+				DrawGroupShapeButton(sender, e);
 				return;
             }
 
-			if (e.Control == true && e.KeyCode == Keys.G && e.Shift == true)
+			if (Utility.IsUngroupShapesKeyCombinationClicked(e))
             {
-				// TODO ungroup
-            }
+				UnGroupSelectedShapesButtonClick(sender, e);
+				return;
+			}
 
 			if (e.Control == true && e.KeyCode == Keys.C)
 			{
-				foreach(Shape shape in dialogProcessor.Selection)
+				foreach(Shape shape in dialogProcessor.SelectedShapesCollection)
                 {
 					Shape copyShape = (Shape)shape.Clone();
 					dialogProcessor.ShapeList.Add(copyShape);
@@ -248,8 +255,22 @@ namespace Draw
 
         private void ContextOpening(object sender, System.ComponentModel.CancelEventArgs e)
         {
-			contextMenuStrip1.Items.Clear();		
-			if(dialogProcessor.Selection.Count > 0)
+			contextMenuStrip1.Items.Clear();
+
+			int numberOfGroupShapes = dialogProcessor.SelectedShapesCollection
+							.Where(shape => shape.ShapeType == Shape.Type.GROUP)
+							.Count();
+
+			if (numberOfGroupShapes > 0)
+            {
+				contextMenuStrip1.Items.Add(
+					"Ungroup shapes", 
+					null, 
+					new EventHandler(UnGroupSelectedShapesButtonClick)
+				);
+			}
+
+			if (dialogProcessor.SelectedShapesCollection.Count > 0)
             {	
 				contextMenuStrip1.Items.Add("Rotate Shape", null, new EventHandler(RotateShapeButton));
 				contextMenuStrip1.Items.Add("Delete", null, new EventHandler(DeleteShapeButtonClick));
@@ -284,13 +305,25 @@ namespace Draw
 
 		private void DeleteShapeButtonClick(object sender, EventArgs e)
 		{
-			if (dialogProcessor.Selection.Count > 0)
+			if (dialogProcessor.SelectedShapesCollection.Count > 0)
 			{
 				dialogProcessor.DeleteSelectedShapes();
 				viewPort.Invalidate();
 			}
 		}
 
+        private void UnGroupSelectedShapesButtonClick(object sender, EventArgs e)
+        {
+			List<Shape> groupShapes = dialogProcessor.SelectedShapesCollection
+				.Where(shape => shape.ShapeType == Shape.Type.GROUP)
+				.ToList();
+			
+			if(groupShapes.Count > 0)
+            {
+				dialogProcessor.UngroupSelectedShapes(groupShapes);
+				viewPort.Invalidate();
+			}
 
-	}
+		}
+    }
 }
