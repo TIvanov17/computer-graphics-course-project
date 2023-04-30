@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Draw.src.Model;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -6,20 +7,21 @@ using System.Drawing.Drawing2D;
 namespace Draw
 {
 
+	[Serializable]
 	public class GroupShape : Shape
 	{
 		public List<Shape> SubShapes = new List<Shape>();
 
-		public override Matrix TransformationMatrix
+		public override SerializableMatrix TransformationMatrix
 		{
 			get => base.TransformationMatrix;
 			set 
 			{
-				base.TransformationMatrix.Multiply(value);
+				base.TransformationMatrix.transformationMatrix.Multiply(value.transformationMatrix);
 
 				foreach (Shape currentSubShape in SubShapes)
 				{
-					currentSubShape.TransformationMatrix.Multiply(value);
+					currentSubShape.TransformationMatrix.transformationMatrix.Multiply(value.transformationMatrix);
 				}
 			}
 		}

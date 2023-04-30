@@ -23,5 +23,20 @@ namespace Draw.src.Util
         {
             return e.Control == true && e.KeyCode == Keys.V;
         }
+
+        public static bool IsSelectAllShapesCommandClicked(KeyEventArgs e)
+        {
+            return e.Control && e.KeyCode == Keys.A && !e.Shift;
+        }
+
+        public static bool IsUnselectAllShapesCommandClicked(KeyEventArgs e)
+        {
+            return e.Control && e.KeyCode == Keys.A && e.Shift;
+        }
+
+        public static bool IsDeleteSelectedShapesCommandClicked(KeyEventArgs e)
+        {
+            return e.Control && e.KeyCode == Keys.Delete;
+        }
     }
 }

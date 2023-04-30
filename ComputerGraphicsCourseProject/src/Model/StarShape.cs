@@ -1,9 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 
 namespace Draw.src.Model
 {
-    class StarShape : Shape
+	[Serializable]
+	class StarShape : Shape
     {
 		private PointF[] points = new PointF[8];
 

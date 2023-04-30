@@ -6,6 +6,7 @@ namespace Draw
 	/// <summary>
 	/// Класът правоъгълник е основен примитив, който е наследник на базовия Shape.
 	/// </summary>
+	[Serializable]
 	public class RectangleShape : Shape
 	{
 		#region Constructor
@@ -24,9 +25,9 @@ namespace Draw
 		{
 			PointF[] pointsArray = { point };
 
-			TransformationMatrix.Invert();
-			TransformationMatrix.TransformPoints(pointsArray);
-			TransformationMatrix.Invert();
+			TransformationMatrix.transformationMatrix.Invert();
+			TransformationMatrix.transformationMatrix.TransformPoints(pointsArray);
+			TransformationMatrix.transformationMatrix.Invert();
 			
 			return base.Contains(pointsArray[0]);
 		}
@@ -37,7 +38,7 @@ namespace Draw
 			base.DrawSelf(grfx);
 			// set opacity value to current fill color
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
-			grfx.Transform = TransformationMatrix;
+			grfx.Transform = TransformationMatrix.transformationMatrix;
 			
 			grfx.FillRectangle(
 					new SolidBrush(FillColor), 

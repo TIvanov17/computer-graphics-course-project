@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Draw.src.Model;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -107,13 +108,22 @@ namespace Draw
 			set { opacityValue = value; }
 		}
 
-		public Matrix transformationMatrix = new Matrix();
+		public SerializableMatrix transformationMatrix = new SerializableMatrix();
+
+		public virtual SerializableMatrix TransformationMatrix
+		{
+			get { return transformationMatrix; }
+			set { transformationMatrix = value; }
+		}
+
+
+		/*public Matrix transformationMatrix = new Matrix();
 
 		public virtual Matrix TransformationMatrix
         {
 			get { return transformationMatrix; }
 			set { transformationMatrix = value; }
-		}
+		}*/
 
 		#endregion
 

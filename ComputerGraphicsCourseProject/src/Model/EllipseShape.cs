@@ -3,7 +3,8 @@ using System.Drawing;
 
 namespace Draw.src.Model
 {
-    class EllipseShape : Shape
+	[Serializable]
+	class EllipseShape : Shape
     {
 
 		public EllipseShape(RectangleF rect) : base(rect)

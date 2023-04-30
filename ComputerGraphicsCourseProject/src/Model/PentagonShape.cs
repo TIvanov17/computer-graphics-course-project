@@ -1,9 +1,11 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 
 namespace Draw.src.Model
 {
-    class PentagonShape : Shape
+	[Serializable]
+	class PentagonShape : Shape
     {
 		public PentagonShape(RectangleF rect) : base(rect)
 		{

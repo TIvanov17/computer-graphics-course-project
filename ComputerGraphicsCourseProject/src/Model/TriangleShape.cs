@@ -1,8 +1,10 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace Draw.src.Model
 {
-    class TriangleShape : Shape
+	[Serializable]
+	class TriangleShape : Shape
     {
 		private PointF[] points = new PointF[3];
 

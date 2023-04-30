@@ -60,6 +60,13 @@ namespace Draw
 			set { lastLocation = value; }
 		}
 
+		private Color lastPickedColor;
+		public Color LastPickedColor
+		{
+			get { return lastPickedColor; }
+			set { lastPickedColor = value; }
+		}
+
 		#endregion
 
 		public void AddGroupShape(int strokeWidth)
@@ -168,9 +175,9 @@ namespace Draw
 				foreach (Shape selectedShape in SelectedShapesCollection)
                 {
 					
-					selectedShape.TransformationMatrix.Invert();
-					selectedShape.TransformationMatrix.TransformPoints(pointsArray);
-					selectedShape.TransformationMatrix.Invert();
+					selectedShape.TransformationMatrix.transformationMatrix.Invert();
+					selectedShape.TransformationMatrix.transformationMatrix.TransformPoints(pointsArray);
+					selectedShape.TransformationMatrix.transformationMatrix.Invert();
 
 					selectedShape.Location = new PointF
 						(selectedShape.Location.X + pointsArray[0].X - lastLocation.X,
@@ -256,7 +263,7 @@ namespace Draw
 				foreach(Shape selectedShape in SelectedShapesCollection)
                 {
 
-					float[] matrixElements = selectedShape.TransformationMatrix.Elements;
+					float[] matrixElements = selectedShape.TransformationMatrix.transformationMatrix.Elements;
 					
 					Matrix newRotatedMatrix = new Matrix(matrixElements[0], matrixElements[1], 
 														matrixElements[2], matrixElements[3], 
@@ -269,7 +276,7 @@ namespace Draw
 						)
 					);
 
-					selectedShape.TransformationMatrix = newRotatedMatrix;
+					selectedShape.TransformationMatrix.transformationMatrix = newRotatedMatrix;
 				}
 			}
 		}
@@ -280,7 +287,7 @@ namespace Draw
 			{
 				foreach (Shape selectedShape in SelectedShapesCollection)
                 {
-					selectedShape.TransformationMatrix.Scale(scaleFactorX, scaleFactorY);
+					selectedShape.TransformationMatrix.transformationMatrix.Scale(scaleFactorX, scaleFactorY);
 				}
 			}
 		}
@@ -324,6 +331,30 @@ namespace Draw
 				Shape newFreshShapeOfCopiedOne = (Shape)shape.Clone();
 				ShapeList.Add(newFreshShapeOfCopiedOne);
 			}	
+		}
+
+		public void SelectAllShapes()
+        {
+			foreach(Shape shape in ShapeList)
+            {
+                if (!SelectedShapesCollection.Contains(shape))
+                {
+					SelectedShapesCollection.Add(shape);
+                }
+            }
+        }
+
+		public void InvertSelection()
+        {
+			foreach (Shape shape in ShapeList)
+			{
+				if (SelectedShapesCollection.Contains(shape))
+				{
+					SelectedShapesCollection.Remove(shape);
+					continue;
+				}
+				SelectedShapesCollection.Add(shape);
+			}
 		}
 
 		private RectangleF DrawGroupShapeRectangle()

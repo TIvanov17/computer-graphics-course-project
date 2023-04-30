@@ -3,7 +3,9 @@ using Draw.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace Draw
@@ -97,7 +99,10 @@ namespace Draw
 		void ViewPortMouseMove(object sender, MouseEventArgs e)
 		{
 			if (dialogProcessor.IsDragging) {
-				if (dialogProcessor.SelectedShapesCollection != null) statusBar.Items[0].Text = "Последно действие: Влачене";
+				if (dialogProcessor.SelectedShapesCollection != null)
+				{
+					statusBar.Items[0].Text = "Последно действие: Влачене";
+				}
 				dialogProcessor.TranslateTo(e.Location);
 				viewPort.Invalidate();
 			}
@@ -120,19 +125,21 @@ namespace Draw
 
         private void ChangeFillColorClick(object sender, EventArgs e)
         {
-			if (colorDialog2.ShowDialog() == DialogResult.OK)
+			if (fillColorDialog.ShowDialog() == DialogResult.OK)
 			{
-				lastPickedColor.BackColor = colorDialog2.Color;
-				dialogProcessor.SetFillColor(colorDialog2.Color);
+
+				dialogProcessor.LastPickedColor = fillColorDialog.Color;
+				lastPickedColor.BackColor = fillColorDialog.Color;
+				dialogProcessor.SetFillColor(fillColorDialog.Color);
 				viewPort.Invalidate();
 			}
 		}
 
         private void ChangeStrokeColorClick(object sender, EventArgs e)
         {
-			if (colorDialog1.ShowDialog() == DialogResult.OK)
+			if (strokeColorDialog.ShowDialog() == DialogResult.OK)
 			{
-				dialogProcessor.SetStrokeColor(colorDialog1.Color);
+				dialogProcessor.SetStrokeColor(strokeColorDialog.Color);
 				viewPort.Invalidate();
 			}
 		}
@@ -245,6 +252,21 @@ namespace Draw
 				viewPort.Invalidate();
 			}
 
+			if (Commands.IsSelectAllShapesCommandClicked(e))
+			{
+				SelectAllShapesButtonClicked(sender, e);
+				return;
+			}
+			if (Commands.IsUnselectAllShapesCommandClicked(e))
+			{
+				UnselectAllShapesButtonClicked(sender, e);
+				return;
+			}
+			if (Commands.IsDeleteSelectedShapesCommandClicked(e))
+			{
+				DeleteShapeButtonClick(sender, e);
+			}
+
 		}
 
         private void ContextOpening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -264,8 +286,15 @@ namespace Draw
 				);
 			}
 
+
+			if (dialogProcessor.ShapeList.Count > 0)
+			{
+				contextMenuStrip1.Items.Add("Select All Shapes", null, new EventHandler(SelectAllShapesButtonClicked));
+			}
+
 			if (dialogProcessor.SelectedShapesCollection.Count > 0)
-            {	
+            {
+				contextMenuStrip1.Items.Add("Unselect All", null, new EventHandler(UnselectAllShapesButtonClicked));
 				contextMenuStrip1.Items.Add("Rotate Shape", null, new EventHandler(RotateShapeButton));
 				contextMenuStrip1.Items.Add("Delete", null, new EventHandler(DeleteShapeButtonClick));
 				contextMenuStrip1.Items.Add("Copy", null, new EventHandler(CopyShapesButtonClicked));
@@ -340,6 +369,75 @@ namespace Draw
 				dialogProcessor.PasteShapes();
 				viewPort.Invalidate();
 			}
+		}
+
+		private void SelectAllShapesButtonClicked(object sender, EventArgs e)
+		{
+			if (dialogProcessor.ShapeList.Count > 0)
+			{
+				dialogProcessor.SelectAllShapes();
+				viewPort.Invalidate();
+			}
+		}
+
+		private void UnselectAllShapesButtonClicked(object sender, EventArgs e)
+		{
+			if (dialogProcessor.ShapeList.Count > 0)
+			{
+				dialogProcessor.SelectedShapesCollection.Clear();
+				viewPort.Invalidate();
+			}
+		}
+
+		private void InvertSelectionButtonClicked(object sender, EventArgs e)
+		{
+			// TODO: add login in DialogProcessor in some Method
+
+			if (dialogProcessor.ShapeList.Count > 0 && 
+				dialogProcessor.SelectedShapesCollection.Count == 0)
+			{
+				SelectAllShapesButtonClicked(sender, e);
+				viewPort.Invalidate();
+				return;
+			}
+
+			if (dialogProcessor.ShapeList.Count > 0 && 
+				dialogProcessor.SelectedShapesCollection.Count > 0)
+			{
+				dialogProcessor.InvertSelection();
+				viewPort.Invalidate();
+			}
+
+		}
+
+
+
+        private void SaveButtonClicked(object sender, EventArgs e)
+        {
+
+			BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+			FileStream fileStream =
+				new FileStream("C:/Users/cecki/OneDrive/Desktop/data.dat", FileMode.Create);
+
+			binaryFormatter.Serialize(fileStream, dialogProcessor.ShapeList);
+
+			// binary format file stream save, wrapper of matrix
+			// file stream, binary, deserialize cast to shape list
+		}
+
+        private void UploadButtonClicked(object sender, EventArgs e)
+        {
+			FileStream fs = new FileStream("C:/Users/cecki/OneDrive/Desktop/data.dat", FileMode.Open);
+
+			BinaryFormatter formatter = new BinaryFormatter();
+
+			List<Shape> myObject = (List<Shape>)formatter.Deserialize(fs);
+
+			Console.WriteLine();
+
+			dialogProcessor.ShapeList.AddRange(myObject);
+			viewPort.Invalidate();
 		}
     }
 }
