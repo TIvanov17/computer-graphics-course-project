@@ -266,7 +266,14 @@ namespace Draw
 			{
 				DeleteShapeButtonClick(sender, e);
 			}
-
+            if (Commands.SaveAsCommandClicked(e))
+            {
+				SaveButtonClicked(sender, e);
+            }
+			if (Commands.UploadCommandClicked(e))
+			{
+				UploadButtonClicked(sender, e);
+			}
 		}
 
         private void ContextOpening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -410,34 +417,45 @@ namespace Draw
 
 		}
 
+		private void SaveFile_Click(object sender, EventArgs e)
+		{
+			string path = Path.Combine(Environment.CurrentDirectory, @"Data\", "local_save.cg");
+			Console.WriteLine(path);
+			ModelSaver.SaveModel(path,
+				dialogProcessor.ShapeList);
+			viewPort.Invalidate();
+		}
 
 
-        private void SaveButtonClicked(object sender, EventArgs e)
+		private void SaveButtonClicked(object sender, EventArgs e)
         {
-
-			BinaryFormatter binaryFormatter = new BinaryFormatter();
-
-			FileStream fileStream =
-				new FileStream("C:/Users/cecki/OneDrive/Desktop/data.dat", FileMode.Create);
-
-			binaryFormatter.Serialize(fileStream, dialogProcessor.ShapeList);
-
-			// binary format file stream save, wrapper of matrix
-			// file stream, binary, deserialize cast to shape list
+			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+			{
+				ModelSaver.SaveModel(saveFileDialog1.FileName, dialogProcessor.ShapeList);
+				viewPort.Invalidate();
+			}
 		}
 
         private void UploadButtonClicked(object sender, EventArgs e)
         {
-			FileStream fs = new FileStream("C:/Users/cecki/OneDrive/Desktop/data.dat", FileMode.Open);
+			
+			if (uploadFileDialog.ShowDialog() == DialogResult.OK)
+			{
+				String path = uploadFileDialog.FileName;
 
-			BinaryFormatter formatter = new BinaryFormatter();
+				if (path.Contains(".cg"))
+				{
+					dialogProcessor.ShapeList.Clear();
+					dialogProcessor.SelectedShapesCollection.Clear();
+					dialogProcessor.CopyOfSelectedShapes.Clear();
+					dialogProcessor.ShapeList.AddRange(ModelSaver.UploadModel(path));
+				}
 
-			List<Shape> myObject = (List<Shape>)formatter.Deserialize(fs);
+				viewPort.Invalidate();
+			}
 
-			Console.WriteLine();
-
-			dialogProcessor.ShapeList.AddRange(myObject);
-			viewPort.Invalidate();
 		}
+
+     
     }
 }

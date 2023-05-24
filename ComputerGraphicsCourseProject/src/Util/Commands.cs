@@ -38,5 +38,15 @@ namespace Draw.src.Util
         {
             return e.Control && e.KeyCode == Keys.Delete;
         }
+
+        public static bool SaveAsCommandClicked(KeyEventArgs e)
+        {
+            return e.Control && e.KeyCode == Keys.Space && e.Shift;
+        }
+
+        public static bool UploadCommandClicked(KeyEventArgs e)
+        {
+            return e.Control && e.KeyCode == Keys.Space && !e.Shift;
+        }
     }
 }

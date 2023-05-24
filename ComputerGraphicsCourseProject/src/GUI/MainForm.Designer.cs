@@ -34,8 +34,9 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.dsooToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFIleAs = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,8 +69,10 @@
             this.opacityValue = new System.Windows.Forms.TrackBar();
             this.mouseCoorinates = new System.Windows.Forms.Label();
             this.lastPickedColor = new System.Windows.Forms.Button();
+            this.uploadFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.viewPort = new Draw.DoubleBufferedPanel();
-            this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.saveFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.statusBar.SuspendLayout();
@@ -107,19 +110,20 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveToolStripMenuItem,
-            this.exitToolStripMenuItem,
-            this.uploadToolStripMenuItem});
+            this.saveFile,
+            this.saveFIleAs,
+            this.uploadToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // saveToolStripMenuItem
+            // saveFIleAs
             // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveButtonClicked);
+            this.saveFIleAs.Name = "saveFIleAs";
+            this.saveFIleAs.Size = new System.Drawing.Size(180, 22);
+            this.saveFIleAs.Text = "Save as";
+            this.saveFIleAs.Click += new System.EventHandler(this.SaveButtonClicked);
             // 
             // exitToolStripMenuItem
             // 
@@ -127,6 +131,13 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
+            // 
+            // uploadToolStripMenuItem
+            // 
+            this.uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
+            this.uploadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uploadToolStripMenuItem.Text = "Upload from";
+            this.uploadToolStripMenuItem.Click += new System.EventHandler(this.UploadButtonClicked);
             // 
             // editToolStripMenuItem
             // 
@@ -410,6 +421,10 @@
             this.lastPickedColor.TabIndex = 8;
             this.lastPickedColor.UseVisualStyleBackColor = true;
             // 
+            // uploadFileDialog
+            // 
+            this.uploadFileDialog.Filter = "Binary File|*.cg|All files|*.*";
+            // 
             // viewPort
             // 
             this.viewPort.ContextMenuStrip = this.contextMenuStrip1;
@@ -424,12 +439,16 @@
             this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
             this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
             // 
-            // uploadToolStripMenuItem
+            // saveFileDialog1
             // 
-            this.uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
-            this.uploadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.uploadToolStripMenuItem.Text = "Upload";
-            this.uploadToolStripMenuItem.Click += new System.EventHandler(this.UploadButtonClicked);
+            this.saveFileDialog1.Filter = "Binary File|*.cg";
+            // 
+            // saveFile
+            // 
+            this.saveFile.Name = "saveFile";
+            this.saveFile.Size = new System.Drawing.Size(180, 22);
+            this.saveFile.Text = "Save";
+            this.saveFile.Click += new System.EventHandler(this.SaveFile_Click);
             // 
             // MainForm
             // 
@@ -502,7 +521,10 @@
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem invertSelectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unselectAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveFIleAs;
         private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog uploadFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.ToolStripMenuItem saveFile;
     }
 }
