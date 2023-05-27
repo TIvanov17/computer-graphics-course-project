@@ -21,7 +21,7 @@ namespace Draw
         }
 
 		#region Constructors
-		
+
 		public Shape()
 		{
 		}
@@ -30,7 +30,7 @@ namespace Draw
 		{
 			rectangle = rect;
 		}
-		
+
 		public Shape(Shape shape)
 		{
 			Rectangle = shape.Rectangle;
@@ -134,6 +134,7 @@ namespace Draw
 
 		public virtual void DrawSelf(Graphics grfx)
 		{
+			//grfx.Transform = TransformationMatrix.Matrix;
 			// shape.Rectangle.Inflate(shape.BorderWidth, shape.BorderWidth);
 		}
 

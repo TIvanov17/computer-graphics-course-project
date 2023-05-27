@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using Draw.src.Model;
+using Draw.src.Util;
 using Draw.Util;
 
 namespace Draw
@@ -67,6 +68,21 @@ namespace Draw
 			set { lastPickedColor = value; }
 		}
 
+		private PointF positionOnRightClickAddShape;
+		public PointF PositionOnRightClickAddShape
+		{
+			get { return positionOnRightClickAddShape; }
+			set { positionOnRightClickAddShape = value; }
+		}
+
+		private DrawSpecs drawSpecs = new DrawSpecs();
+		public DrawSpecs DrawSpecs
+		{
+			get { return drawSpecs; }
+			set { drawSpecs = value; }
+		}
+
+
 		#endregion
 
 		public void AddGroupShape(int strokeWidth)
@@ -114,9 +130,27 @@ namespace Draw
 			ShapeList.Add(ellipse);
 		}
 
+		public void AddRandomCircle(int strokeWidth)
+		{
+			Rectangle rectangle = DrawRectangle(100, 100);
+			EllipseShape circle = new EllipseShape(rectangle);
+			circle.StrokeWidth = strokeWidth;
+
+			ShapeList.Add(circle);
+		}
+
+		public void AddRandomLine(int strokeWidth)
+        {
+			Rectangle rectangle = DrawRectangle(200, 30);
+			Line line = new Line(rectangle);
+			line.StrokeWidth = strokeWidth;
+
+			ShapeList.Add(line);
+		}
+
 		public void AddRandomTriangle(int strokeWidth)
 		{
-			Rectangle rectangle = DrawRectangle(100, 200);
+			Rectangle rectangle = DrawRectangle(100, 100);
 			TriangleShape triangle = new TriangleShape(rectangle);
 			triangle.StrokeWidth = strokeWidth;
 
@@ -137,6 +171,43 @@ namespace Draw
 			StarShape star = new StarShape(rectangle);
 			star.StrokeWidth = strokeWidth;
 			ShapeList.Add(star);
+		}
+
+		public void BuildNewShape(int strokeWidth)
+        {
+			Rectangle rectangle;
+
+			if (DrawSpecs.ShouldDrawOnRandomPosition)
+            {
+				rectangle = DrawRectangle(100, 100);
+			}
+            else
+            {
+				rectangle = new Rectangle(
+					(int)DrawSpecs.Position.X - 50,
+					(int)DrawSpecs.Position.Y - 70,
+					100, 100
+				);
+			}
+
+			StarShape star = new StarShape(rectangle);
+			star.StrokeWidth = strokeWidth;
+			ShapeList.Add(star);
+		}
+
+		public void AddStar(int strokeWidth)
+		{
+			if(positionOnRightClickAddShape != null)
+            {
+				Rectangle rectangle = new Rectangle(
+					(int)PositionOnRightClickAddShape.X - 50,
+					(int)PositionOnRightClickAddShape.Y - 70, 
+					100, 200);
+				
+				StarShape star = new StarShape(rectangle);
+				star.StrokeWidth = strokeWidth;
+				ShapeList.Add(star);
+			}
 		}
 
 		/// <summary>
@@ -175,9 +246,9 @@ namespace Draw
 				foreach (Shape selectedShape in SelectedShapesCollection)
                 {
 					
-					selectedShape.TransformationMatrix.transformationMatrix.Invert();
-					selectedShape.TransformationMatrix.transformationMatrix.TransformPoints(pointsArray);
-					selectedShape.TransformationMatrix.transformationMatrix.Invert();
+					selectedShape.TransformationMatrix.Matrix.Invert();
+					selectedShape.TransformationMatrix.Matrix.TransformPoints(pointsArray);
+					selectedShape.TransformationMatrix.Matrix.Invert();
 
 					selectedShape.Location = new PointF
 						(selectedShape.Location.X + pointsArray[0].X - lastLocation.X,
@@ -200,7 +271,7 @@ namespace Draw
 			if (SelectedShapesCollection.Count > 0)
 			{
 				foreach(Shape selectedShape in SelectedShapesCollection){
-					
+
 					grfx.DrawRectangle(
 						dashPen,
 						selectedShape.Location.X - 3,
@@ -263,7 +334,8 @@ namespace Draw
 				foreach(Shape selectedShape in SelectedShapesCollection)
                 {
 
-					float[] matrixElements = selectedShape.TransformationMatrix.transformationMatrix.Elements;
+					float[] matrixElements = selectedShape.TransformationMatrix.
+						Matrix.Elements;
 					
 					Matrix newRotatedMatrix = new Matrix(matrixElements[0], matrixElements[1], 
 														matrixElements[2], matrixElements[3], 
@@ -276,7 +348,7 @@ namespace Draw
 						)
 					);
 
-					selectedShape.TransformationMatrix.transformationMatrix = newRotatedMatrix;
+					selectedShape.TransformationMatrix.Matrix = newRotatedMatrix;
 				}
 			}
 		}
@@ -287,7 +359,8 @@ namespace Draw
 			{
 				foreach (Shape selectedShape in SelectedShapesCollection)
                 {
-					selectedShape.TransformationMatrix.transformationMatrix.Scale(scaleFactorX, scaleFactorY);
+					selectedShape.TransformationMatrix
+						.Matrix.Scale(scaleFactorX, scaleFactorY);
 				}
 			}
 		}
@@ -312,6 +385,18 @@ namespace Draw
 				ShapeList.Remove(shape);
 				ShapeList.AddRange(subShapesCollection);
 			}
+		}
+
+		public void CutShapes()
+		{
+			CopyOfSelectedShapes.Clear();
+			foreach (Shape shape in SelectedShapesCollection)
+			{
+				ShapeList.Remove(shape);
+				Shape copyOfCurrentShape = (Shape)shape.Clone();
+				CopyOfSelectedShapes.Add(copyOfCurrentShape);
+			}
+			SelectedShapesCollection.Clear();
 		}
 
 		public void CopyShapes()

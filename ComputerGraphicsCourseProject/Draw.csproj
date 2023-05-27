@@ -38,6 +38,7 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -60,6 +61,7 @@
     </Compile>
     <Compile Include="src\GUI\Program.cs" />
     <Compile Include="src\Model\EllipseShape.cs" />
+    <Compile Include="src\Model\Line.cs" />
     <Compile Include="src\Model\PentagonShape.cs" />
     <Compile Include="src\Model\GroupShape.cs" />
     <Compile Include="src\Model\RectangleShape.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="src\Processors\DialogProcessor.cs" />
     <Compile Include="src\Processors\DisplayProcessor.cs" />
     <Compile Include="src\Util\Commands.cs" />
+    <Compile Include="src\Util\DrawSpecs.cs" />
     <Compile Include="src\Util\ModelSaver.cs" />
     <Compile Include="src\Util\Utility.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

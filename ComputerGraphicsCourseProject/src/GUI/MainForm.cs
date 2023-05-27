@@ -68,6 +68,18 @@ namespace Draw
 		/// </summary>
 		void ViewPortMouseDown(object sender, MouseEventArgs e)
 		{
+			if(e.Button == MouseButtons.Right)
+            {
+				dialogProcessor.DrawSpecs.
+					Position = new PointF(MousePosition.X, MousePosition.Y);
+
+				dialogProcessor.DrawSpecs.
+					ShouldDrawOnRandomPosition = false;
+
+				dialogProcessor.PositionOnRightClickAddShape =
+					new PointF(MousePosition.X, MousePosition.Y);
+            }
+
 			if (pickUpSpeedButton.Checked) {
 				
 				Shape currentClickedShape = dialogProcessor.ContainsPoint(e.Location);
@@ -163,9 +175,17 @@ namespace Draw
 			viewPort.Invalidate();
 		}
 
+		private void DrawStarShapeOnCurrentMousePositionButton(object sender, EventArgs e)
+		{
+			dialogProcessor.BuildNewShape(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
+			viewPort.Invalidate();
+		}
+
 		private void DrawStarShapeButton(object sender, EventArgs e)
 		{
-			dialogProcessor.AddRandomStar(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
+			dialogProcessor.BuildNewShape(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
 			viewPort.Invalidate();
 		}
@@ -184,7 +204,21 @@ namespace Draw
 			viewPort.Invalidate();
 		}
 
-        private void DrawPentagonShapeButtonClick(object sender, EventArgs e)
+		private void DrawCircleShapeButtonClick(object sender, EventArgs e)
+		{
+			dialogProcessor.AddRandomCircle(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на кръг";
+			viewPort.Invalidate();
+		}
+
+		private void DrawLineButtonClick(object sender, EventArgs e)
+		{
+			dialogProcessor.AddRandomLine(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на кръг";
+			viewPort.Invalidate();
+		}
+
+		private void DrawPentagonShapeButtonClick(object sender, EventArgs e)
         {
 			dialogProcessor.AddRandomPentagon(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
@@ -193,7 +227,8 @@ namespace Draw
 
         private void RotateShapeButton(object sender, EventArgs e)
         {
-			dialogProcessor.RotateShape(45);
+			dialogProcessor.RotateShape(int.Parse(angleTextBox.Text));
+			//dialogProcessor.RotateShape(45);
 			statusBar.Items[0].Text = "Последно действие: Ротация на фигура";
 			viewPort.Invalidate();
 		}
@@ -238,6 +273,13 @@ namespace Draw
 				return;
 			}
 
+			if (Commands.IsCutSelectedShapesCommandClicked(e))
+			{
+				dialogProcessor.CutShapes();
+				viewPort.Invalidate();
+				return;
+			}
+
 			if (Commands.IsCopySelectedShapesCommandClicked(e))
 			{
 				dialogProcessor.CopyShapes();
@@ -274,11 +316,19 @@ namespace Draw
 			{
 				UploadButtonClicked(sender, e);
 			}
+
+			if (Commands.IsInvertSelectionCommandClicked(e))
+			{
+				InvertSelectionButtonClicked(sender, e);
+			}
+
 		}
 
-        private void ContextOpening(object sender, System.ComponentModel.CancelEventArgs e)
+		private void ContextOpening(object sender, System.ComponentModel.CancelEventArgs e)
         {
 			contextMenuStrip1.Items.Clear();
+			
+			AddNewShapeOptions();
 
 			int numberOfGroupShapes = dialogProcessor.SelectedShapesCollection
 							.Where(shape => shape.ShapeType == Shape.Type.GROUP)
@@ -305,16 +355,14 @@ namespace Draw
 				contextMenuStrip1.Items.Add("Rotate Shape", null, new EventHandler(RotateShapeButton));
 				contextMenuStrip1.Items.Add("Delete", null, new EventHandler(DeleteShapeButtonClick));
 				contextMenuStrip1.Items.Add("Copy", null, new EventHandler(CopyShapesButtonClicked));
+				contextMenuStrip1.Items.Add("Cut", null, new EventHandler(CutShapesButtonClicked));
+				contextMenuStrip1.Items.Add("Invert Selection", null, new EventHandler(InvertSelectionButtonClicked));
+
 			}
 			if(dialogProcessor.CopyOfSelectedShapes.Count > 0)
             {
 				contextMenuStrip1.Items.Add("Paste", null, new EventHandler(PasteShapesButtonClicked));
 			}
-
-			AddNewShapeOptions();
-
-			// TODO: Shape Manipulations
-
 		}
 
 		private void DeleteShapeButtonClick(object sender, EventArgs e)
@@ -341,23 +389,50 @@ namespace Draw
 
 		private void AddNewShapeOptions()
 		{
-			contextMenuStrip1.Items.Add("New Rectangle", null,
+			ToolStripMenuItem creatShapeOnRandomPosition = 
+				new ToolStripMenuItem("Shape With Random Position");
+
+
+			ToolStripMenuItem creatShapeOnCurrentPosition =
+				new ToolStripMenuItem("Shape With Current Position");
+
+			creatShapeOnCurrentPosition
+				.DropDownItems.Add("Star", null, DrawStarShapeOnCurrentMousePositionButton);
+
+			creatShapeOnRandomPosition
+				.DropDownItems.Add("Rectangle", null,
 				new EventHandler(DrawRectangleSpeedButtonClick));
 
-			contextMenuStrip1.Items.Add("New Square", null,
+			creatShapeOnRandomPosition
+				.DropDownItems.Add("Square", null,
 				new EventHandler(DrawSquareButtonClick));
 
-			contextMenuStrip1.Items.Add("New Ellipse", null,
+			creatShapeOnRandomPosition
+				.DropDownItems.Add("Ellipse", null,
 				new EventHandler(DrawEllipseShapeButtonClick));
 
-			contextMenuStrip1.Items.Add("New Triangle", null,
+			creatShapeOnRandomPosition
+				.DropDownItems.Add("Triangle", null,
 				new EventHandler(DrawTriangleShapeButtonClick));
 
-			contextMenuStrip1.Items.Add("New Pentagon", null,
+			creatShapeOnRandomPosition
+				.DropDownItems.Add("Pentagon", null,
 				new EventHandler(DrawPentagonShapeButtonClick));
 
-			contextMenuStrip1.Items.Add("New Star", null,
+			creatShapeOnRandomPosition
+				.DropDownItems.Add("Star", null,
 				new EventHandler(DrawStarShapeButton));
+
+			creatShapeOnRandomPosition
+				.DropDownItems.Add("Circle", null,
+				new EventHandler(DrawCircleShapeButtonClick));
+
+			creatShapeOnRandomPosition
+				.DropDownItems.Add("New Line", null,
+				new EventHandler(DrawLineButtonClick));
+
+			contextMenuStrip1.Items.Add(creatShapeOnRandomPosition);
+			contextMenuStrip1.Items.Add(creatShapeOnCurrentPosition);
 		}
 
         private void CopyShapesButtonClicked(object sender, EventArgs e)
@@ -369,7 +444,16 @@ namespace Draw
 			}
 		}
 
-        private void PasteShapesButtonClicked(object sender, EventArgs e)
+		private void CutShapesButtonClicked(object sender, EventArgs e)
+		{
+			if (dialogProcessor.SelectedShapesCollection.Count > 0)
+			{
+				dialogProcessor.CutShapes();
+				viewPort.Invalidate();
+			}
+		}
+
+		private void PasteShapesButtonClicked(object sender, EventArgs e)
         {
 			if (dialogProcessor.CopyOfSelectedShapes.Count > 0)
 			{
@@ -398,7 +482,7 @@ namespace Draw
 
 		private void InvertSelectionButtonClicked(object sender, EventArgs e)
 		{
-			// TODO: add login in DialogProcessor in some Method
+			// TODO: add logic in DialogProcessor in some Method
 
 			if (dialogProcessor.ShapeList.Count > 0 && 
 				dialogProcessor.SelectedShapesCollection.Count == 0)
@@ -417,10 +501,10 @@ namespace Draw
 
 		}
 
+		// LOCAL SAVE INTO PROJECT DIR
 		private void SaveFile_Click(object sender, EventArgs e)
 		{
 			string path = Path.Combine(Environment.CurrentDirectory, @"Data\", "local_save.cg");
-			Console.WriteLine(path);
 			ModelSaver.SaveModel(path,
 				dialogProcessor.ShapeList);
 			viewPort.Invalidate();
@@ -442,6 +526,7 @@ namespace Draw
 			if (uploadFileDialog.ShowDialog() == DialogResult.OK)
 			{
 				String path = uploadFileDialog.FileName;
+				//path.EndsWith();
 
 				if (path.Contains(".cg"))
 				{
@@ -456,6 +541,119 @@ namespace Draw
 
 		}
 
-     
+		private static DialogResult BuildForm(ref string x, ref string y, ref string shape)
+        {
+			Form form = new Form();
+			Label labelForInputX = new Label();
+			Label labelForInputY = new Label();
+			Label labelForShape = new Label();
+			TextBox textBoxForX = new TextBox();
+			TextBox textBoxForY = new TextBox();
+			ComboBox comboBox = new ComboBox();
+			comboBox.Items.AddRange(new string[] { 
+				"Line", "Ellipse", "Rectangle", 
+				"Star", "Triangle", "Cicle", "Pentagon" 
+			});
+
+			Button buttonOk = new Button();
+			
+			labelForInputX.Text = "X:";
+			labelForInputY.Text = "Y:";
+			labelForShape.Text = "Select Shape:";
+			buttonOk.Text = "OK";
+			buttonOk.DialogResult = DialogResult.OK;
+
+			labelForInputX.SetBounds(20, 86, 20, 20);
+			labelForInputY.SetBounds(120, 86, 20, 20);
+			textBoxForX.SetBounds(50, 86, 30, 20);
+			textBoxForY.SetBounds(150, 86, 30, 20);
+			labelForShape.SetBounds(10, 120, 80, 20);
+			comboBox.SetBounds(100, 120, 70, 20);
+			buttonOk.SetBounds(100, 160, 30, 30);
+			
+			labelForInputX.AutoSize = true;
+			form.ClientSize = new Size(200, 200);
+			form.FormBorderStyle = FormBorderStyle.FixedDialog;
+			form.StartPosition = FormStartPosition.CenterScreen;
+			form.MinimizeBox = false;
+			form.MaximizeBox = false;
+
+			form.Controls
+				.AddRange(new Control[] { 
+					labelForInputX, labelForInputY, labelForShape,
+					textBoxForX, textBoxForY,
+					comboBox, buttonOk
+				});
+			form.AcceptButton = buttonOk;
+
+			DialogResult dialogResult = form.ShowDialog();
+			
+			x = textBoxForX.Text;
+			y = textBoxForY.Text;
+			shape = (string)comboBox.SelectedItem;
+
+
+			return dialogResult;
+		}
+
+        private void NewForm(object sender, EventArgs e)
+        {
+
+            string x = "";
+            string y = "";
+            string shape = "";
+            if (BuildForm(ref x, ref y, ref shape) == DialogResult.OK)
+            {
+                dialogProcessor.PositionOnRightClickAddShape =
+                    new PointF(float.Parse(x), float.Parse(y));
+
+				dialogProcessor.DrawSpecs.Position = 
+					new PointF(float.Parse(x), float.Parse(y));
+
+				dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+
+				DrawSelectedShape(sender, e, shape);
+			}
+        }
+
+		private void DrawSelectedShape(object sender, EventArgs e, string selectedShape)
+        {
+
+			if (selectedShape.Equals("Line"))
+			{
+				DrawLineButtonClick(sender, e);
+			}
+
+			if (selectedShape.Equals("Ellipse"))
+			{
+				DrawLineButtonClick(sender, e);
+			}
+
+			if (selectedShape.Equals("Rectangle"))
+			{
+				DrawLineButtonClick(sender, e);
+			}
+
+			if (selectedShape.Equals("Triangle"))
+			{
+				DrawLineButtonClick(sender, e);
+			}
+
+			if (selectedShape.Equals("Cicle"))
+			{
+				DrawLineButtonClick(sender, e);
+			}
+
+			if (selectedShape.Equals("Pentagon"))
+			{
+				DrawLineButtonClick(sender, e);
+			}
+
+			if (selectedShape.Equals("Star"))
+			{
+				DrawStarShapeOnCurrentMousePositionButton(sender, e);
+			}
+
+		}
     }
 }

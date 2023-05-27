@@ -25,10 +25,11 @@ namespace Draw
 		{
 			PointF[] pointsArray = { point };
 
-			TransformationMatrix.transformationMatrix.Invert();
-			TransformationMatrix.transformationMatrix.TransformPoints(pointsArray);
-			TransformationMatrix.transformationMatrix.Invert();
-			
+			TransformationMatrix.Matrix.Invert();
+			TransformationMatrix.Matrix.TransformPoints(pointsArray);
+			TransformationMatrix.Matrix.Invert();
+
+			//TransformationMatrix.Matrix.TransformPoints(new PointF[] { point });
 			return base.Contains(pointsArray[0]);
 		}
 		
@@ -38,8 +39,8 @@ namespace Draw
 			base.DrawSelf(grfx);
 			// set opacity value to current fill color
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
-			grfx.Transform = TransformationMatrix.transformationMatrix;
-			
+			grfx.Transform = TransformationMatrix.Matrix;
+
 			grfx.FillRectangle(
 					new SolidBrush(FillColor), 
 					Rectangle.X, 

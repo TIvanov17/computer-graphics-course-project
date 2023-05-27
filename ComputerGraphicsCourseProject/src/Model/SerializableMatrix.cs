@@ -9,19 +9,19 @@ namespace Draw.src.Model
     {
         [NonSerializedAttribute]
      
-        public Matrix transformationMatrix;
+        public Matrix matrix;
       
         public float[] Elements { set; get; }
       
-        public virtual Matrix TransformationMatrix
+        public virtual Matrix Matrix
         {
-            get { return transformationMatrix; }
-            set { transformationMatrix = value; }
+            get { return matrix; }
+            set { matrix = value; }
         }
 
         public SerializableMatrix()
         {
-            transformationMatrix = new Matrix();
+            matrix = new Matrix();
         }
 
         public SerializableMatrix(SerializationInfo info, StreamingContext context)
@@ -32,13 +32,13 @@ namespace Draw.src.Model
 
             Elements = (float[])info.GetValue("Elements", new float[6].GetType());
 
-            TransformationMatrix = new Matrix(Elements[0], Elements[1], 
+            Matrix = new Matrix(Elements[0], Elements[1], 
                 Elements[2], Elements[3],Elements[4], Elements[5]);
         }
 
         void ISerializable.GetObjectData(SerializationInfo oInfo, StreamingContext oContext)
         {
-            oInfo.AddValue("Elements", TransformationMatrix.Elements);
+            oInfo.AddValue("Elements", Matrix.Elements);
         }
     }
 }

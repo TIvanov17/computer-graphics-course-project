@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Draw.src.Model
 {
@@ -19,7 +20,40 @@ namespace Draw.src.Model
 
         public override bool Contains(PointF point)
 		{
-			return base.Contains(point);
+
+			double A = FindArea(points[0], points[1], points[2]);
+
+			double A1 = FindArea(point, points[1], points[2]);
+
+			double A2 = FindArea(points[0], point, points[2]);
+
+			double A3 = FindArea(points[0], points[1], point);
+
+			return (A == A1 + A2 + A3);
+
+			/*PointF startPoint = point;
+
+			double sum = 0;
+
+			for(int i = 0; i < points.Length; i++)
+            {
+				PointF P2 = points[i];
+				PointF P3 = i == points.Length - 1 ? points[0] : points[i + 1];
+
+                double angleInRadians = Math.Atan2(P2.Y - startPoint.Y, P2.X - startPoint.X) -
+										Math.Atan2(P3.Y - startPoint.Y, P3.X - startPoint.X);
+
+				double angleInDegree = 360 * angleInRadians / (2 * Math.PI); 
+
+				if(angleInDegree <= -180 && angleInDegree >= -270)
+                {
+					angleInDegree = 360 + angleInDegree;
+                }
+
+				sum += angleInDegree;
+			}
+
+			return sum == 360;*/
 		}
 
 		public override void DrawSelf(Graphics grfx)
@@ -34,7 +68,7 @@ namespace Draw.src.Model
 			points[2] = new Point(currentX + 100, currentY + 0);
 
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
-
+			grfx.Transform = TransformationMatrix.Matrix;
 			grfx.FillPolygon(
 					new SolidBrush(FillColor),
 					points
@@ -51,5 +85,11 @@ namespace Draw.src.Model
 			return new TriangleShape(this);
 		}
 
+		private double FindArea(PointF first, PointF second, PointF third)
+		{
+			return Math.Abs((first.X * (second.Y - third.Y) +
+						second.X * (third.Y - first.Y) +
+						third.X * (first.Y - second.Y)) / 2.0);
+		}
 	}
 }

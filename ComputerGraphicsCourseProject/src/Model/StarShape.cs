@@ -20,7 +20,24 @@ namespace Draw.src.Model
 
 		public override bool Contains(PointF point)
 		{
-			return base.Contains(point);
+			bool result = false;
+			for (int i = 0; i < points.Length - 1; i++)
+			{
+
+				bool checkForY = points[i].Y < point.Y && points[i + 1].Y >= point.Y ||
+							points[i + 1].Y < point.Y && points[i].Y >= point.Y;
+
+				bool checkForX = points[i].X + (point.Y - points[i].Y) /
+						(points[i + 1].Y - points[i].Y) * (points[i + 1].X - points[i].X) < point.X;
+
+
+				if (checkForY && checkForX)
+				{
+					result = !result;
+				}
+			}
+
+			return result;
 		}
 
 		public override void DrawSelf(Graphics grfx)
@@ -40,6 +57,7 @@ namespace Draw.src.Model
 			points[7] = new Point(currentX + 40, currentY + 60);
 
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
+			grfx.Transform = TransformationMatrix.Matrix;
 
 			grfx.FillPolygon(
 					new SolidBrush(FillColor),

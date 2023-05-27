@@ -8,23 +8,23 @@ namespace Draw
 {
 
 	[Serializable]
-	public class GroupShape : Shape
-	{
-		public List<Shape> SubShapes = new List<Shape>();
-
-		public override SerializableMatrix TransformationMatrix
+		public class GroupShape : Shape
 		{
-			get => base.TransformationMatrix;
-			set 
-			{
-				base.TransformationMatrix.transformationMatrix.Multiply(value.transformationMatrix);
+			public List<Shape> SubShapes = new List<Shape>();
 
-				foreach (Shape currentSubShape in SubShapes)
+			public override SerializableMatrix TransformationMatrix
+			{
+				get => base.TransformationMatrix;
+				set 
 				{
-					currentSubShape.TransformationMatrix.transformationMatrix.Multiply(value.transformationMatrix);
+					base.TransformationMatrix.Matrix.Multiply(value.Matrix);
+
+					foreach (Shape currentSubShape in SubShapes)
+					{
+						currentSubShape.TransformationMatrix.Matrix.Multiply(value.Matrix);
+					}
 				}
 			}
-		}
 
 		public override Color FillColor
 		{

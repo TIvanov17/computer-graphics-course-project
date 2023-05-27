@@ -36,7 +36,7 @@ namespace Draw.src.Model
 
 			// set opacity value to current fill color
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
-
+			grfx.Transform = TransformationMatrix.Matrix;
 			grfx.FillEllipse(
 					new SolidBrush(FillColor),
 					Rectangle.X,

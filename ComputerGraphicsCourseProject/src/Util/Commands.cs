@@ -14,6 +14,12 @@ namespace Draw.src.Util
             return e.Control == true && e.KeyCode == Keys.G && e.Shift == true;
         }
 
+        // Cut Operation 
+        public static bool IsCutSelectedShapesCommandClicked(KeyEventArgs e)
+        {
+            return e.Control == true && e.KeyCode == Keys.X;
+        }
+
         public static bool IsCopySelectedShapesCommandClicked(KeyEventArgs e)
         {
             return e.Control == true && e.KeyCode == Keys.C;
@@ -36,8 +42,14 @@ namespace Draw.src.Util
 
         public static bool IsDeleteSelectedShapesCommandClicked(KeyEventArgs e)
         {
-            return e.Control && e.KeyCode == Keys.Delete;
+            return e.KeyCode == Keys.Delete;
         }
+
+        public static bool IsInvertSelectionCommandClicked(KeyEventArgs e)
+        {
+            return e.Control && e.KeyCode == Keys.F;
+        }
+
 
         public static bool SaveAsCommandClicked(KeyEventArgs e)
         {
