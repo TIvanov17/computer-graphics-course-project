@@ -21,40 +21,47 @@ namespace Draw.src.Model
         public override bool Contains(PointF point)
 		{
 
-			double A = FindArea(points[0], points[1], points[2]);
+			PointF[] pointsArray = { point };
 
-			double A1 = FindArea(point, points[1], points[2]);
+			TransformationMatrix.Matrix.Invert();
+			TransformationMatrix.Matrix.TransformPoints(pointsArray);
+			TransformationMatrix.Matrix.Invert();
 
-			double A2 = FindArea(points[0], point, points[2]);
 
-			double A3 = FindArea(points[0], points[1], point);
+            /*            double A = FindArea(points[0], points[1], points[2]);
 
-			return (A == A1 + A2 + A3);
+                        double A1 = FindArea(pointsArray[0], points[1], points[2]);
 
-			/*PointF startPoint = point;
+                        double A2 = FindArea(points[0], pointsArray[0], points[2]);
 
-			double sum = 0;
+                        double A3 = FindArea(points[0], points[1], pointsArray[0]);
 
-			for(int i = 0; i < points.Length; i++)
+                        return (A == A1 + A2 + A3);*/
+
+            PointF startPoint = pointsArray[0];
+
+            double sum = 0;
+
+            for (int i = 0; i < points.Length; i++)
             {
-				PointF P2 = points[i];
-				PointF P3 = i == points.Length - 1 ? points[0] : points[i + 1];
+                PointF P2 = points[i];
+                PointF P3 = i == points.Length - 1 ? points[0] : points[i + 1];
 
                 double angleInRadians = Math.Atan2(P2.Y - startPoint.Y, P2.X - startPoint.X) -
-										Math.Atan2(P3.Y - startPoint.Y, P3.X - startPoint.X);
+                                        Math.Atan2(P3.Y - startPoint.Y, P3.X - startPoint.X);
 
-				double angleInDegree = 360 * angleInRadians / (2 * Math.PI); 
+                double angleInDegree = 360 * angleInRadians / (2 * Math.PI);
 
-				if(angleInDegree <= -180 && angleInDegree >= -270)
+                if (angleInDegree <= -180 && angleInDegree >= -270)
                 {
-					angleInDegree = 360 + angleInDegree;
+                    angleInDegree = 360 + angleInDegree;
                 }
 
-				sum += angleInDegree;
-			}
+                sum += angleInDegree;
+            }
 
-			return sum == 360;*/
-		}
+            return sum == 360;
+        }
 
 		public override void DrawSelf(Graphics grfx)
 		{

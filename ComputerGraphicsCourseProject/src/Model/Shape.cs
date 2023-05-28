@@ -44,9 +44,17 @@ namespace Draw
 			TransformationMatrix = shape.TransformationMatrix;
 		}
 		#endregion
-		
+
 		#region Properties
-		
+
+		private string name;
+
+		public virtual string Name
+		{
+			get { return name; }
+			set { name = value; }
+		}
+
 		/// <summary>
 		/// Обхващащ правоъгълник на елемента.
 		/// </summary>
@@ -134,7 +142,7 @@ namespace Draw
 
 		public virtual void DrawSelf(Graphics grfx)
 		{
-			//grfx.Transform = TransformationMatrix.Matrix;
+			// grfx.Transform = TransformationMatrix.Matrix;
 			// shape.Rectangle.Inflate(shape.BorderWidth, shape.BorderWidth);
 		}
 

@@ -52,6 +52,8 @@ namespace Draw
 		{
 			foreach (Shape item in ShapeList){
 				DrawShape(grfx, item);
+				grfx.ResetTransform();
+				//grfx.Transform.Reset();
 			}
 		}
 		

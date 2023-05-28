@@ -20,15 +20,21 @@ namespace Draw.src.Model
 
 		public override bool Contains(PointF point)
 		{
+			PointF[] pointsArray = { point };
+
+			TransformationMatrix.Matrix.Invert();
+			TransformationMatrix.Matrix.TransformPoints(pointsArray);
+			TransformationMatrix.Matrix.Invert();
+
 			bool result = false;
 			for (int i = 0; i < points.Length - 1; i++)
 			{
 
-				bool checkForY = points[i].Y < point.Y && points[i + 1].Y >= point.Y ||
-							points[i + 1].Y < point.Y && points[i].Y >= point.Y;
+				bool checkForY = points[i].Y < pointsArray[0].Y && points[i + 1].Y >= pointsArray[0].Y ||
+							points[i + 1].Y < pointsArray[0].Y && points[i].Y >= pointsArray[0].Y;
 
-				bool checkForX = points[i].X + (point.Y - points[i].Y) /
-						(points[i + 1].Y - points[i].Y) * (points[i + 1].X - points[i].X) < point.X;
+				bool checkForX = points[i].X + (pointsArray[0].Y - points[i].Y) /
+						(points[i + 1].Y - points[i].Y) * (points[i + 1].X - points[i].X) < pointsArray[0].X;
 
 
 				if (checkForY && checkForX)

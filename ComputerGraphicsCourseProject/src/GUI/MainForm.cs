@@ -53,10 +53,19 @@ namespace Draw
 		/// Бутон, който поставя на произволно място правоъгълник със зададените размери.
 		/// Променя се лентата със състоянието и се инвалидира контрола, в който визуализираме.
 		/// </summary>
+		void DrawRectangleOnCurrentMousePosition(object sender, EventArgs e)
+		{
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+			dialogProcessor.AddRectangle(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на правоъгълник";	
+			viewPort.Invalidate();
+		}
+
 		void DrawRectangleSpeedButtonClick(object sender, EventArgs e)
 		{
-			dialogProcessor.AddRandomRectangle(int.Parse(strokeWidthTextBox.Text));
-			statusBar.Items[0].Text = "Последно действие: Рисуване на правоъгълник";	
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
+			dialogProcessor.AddRectangle(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на правоъгълник";
 			viewPort.Invalidate();
 		}
 
@@ -95,7 +104,8 @@ namespace Draw
 						dialogProcessor.SelectedShapesCollection.Add(currentClickedShape);
 					}
 
-					statusBar.Items[0].Text = "Последно действие: Селекция на примитив";
+					
+					statusBar.Items[0].Text = "Последно действие: Селекция на примитив " + currentClickedShape.Name;
 					dialogProcessor.IsDragging = true;
 					dialogProcessor.LastLocation = e.Location;
 					viewPort.Invalidate();
@@ -115,7 +125,9 @@ namespace Draw
 				{
 					statusBar.Items[0].Text = "Последно действие: Влачене";
 				}
+
 				dialogProcessor.TranslateTo(e.Location);
+
 				viewPort.Invalidate();
 			}
 			mouseCoorinates.Text = "x: " + MousePosition.X + " y: " + MousePosition.Y;
@@ -177,7 +189,8 @@ namespace Draw
 
 		private void DrawStarShapeOnCurrentMousePositionButton(object sender, EventArgs e)
 		{
-			dialogProcessor.BuildNewShape(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+			dialogProcessor.AddStar(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
 			viewPort.Invalidate();
 		}
@@ -185,58 +198,117 @@ namespace Draw
 		private void DrawStarShapeButton(object sender, EventArgs e)
 		{
 			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
-			dialogProcessor.BuildNewShape(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.AddStar(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
+			viewPort.Invalidate();
+		}
+
+		private void DrawSquareShapeOnCurrentMousePosition(object sender, EventArgs e)
+		{
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+			dialogProcessor.AddSquare(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
 			viewPort.Invalidate();
 		}
 
 		private void DrawSquareButtonClick(object sender, EventArgs e)
         {
-			dialogProcessor.AddRandomSquare(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
+			dialogProcessor.AddSquare(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на квадрат";
 			viewPort.Invalidate();
 		}
 
         private void DrawEllipseShapeButtonClick(object sender, EventArgs e)
         {
-			dialogProcessor.AddRandomEllipse(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
+			dialogProcessor.AddEllipse(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на елипса";
 			viewPort.Invalidate();
 		}
 
+		private void DrawEllipseShapeOnCurrentMousePosition(object sender, EventArgs e)
+		{
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+			dialogProcessor.AddEllipse(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на елипса";
+			viewPort.Invalidate();
+		}
+
+
 		private void DrawCircleShapeButtonClick(object sender, EventArgs e)
 		{
-			dialogProcessor.AddRandomCircle(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
+			dialogProcessor.AddCircle(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на кръг";
+			viewPort.Invalidate();
+		}
+
+		private void DrawCircleShapeOnCurrentMousePosition(object sender, EventArgs e)
+		{
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+			dialogProcessor.AddCircle(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на кръг";
 			viewPort.Invalidate();
 		}
 
 		private void DrawLineButtonClick(object sender, EventArgs e)
 		{
-			dialogProcessor.AddRandomLine(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
+			dialogProcessor.AddLine(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на кръг";
+			viewPort.Invalidate();
+		}
+
+		private void DrawLineShapeOnCurrentMousePosition(object sender, EventArgs e)
+		{
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+			dialogProcessor.AddLine(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на кръг";
 			viewPort.Invalidate();
 		}
 
 		private void DrawPentagonShapeButtonClick(object sender, EventArgs e)
         {
-			dialogProcessor.AddRandomPentagon(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
+			dialogProcessor.AddPentagon(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
 			viewPort.Invalidate();
 		}
 
-        private void RotateShapeButton(object sender, EventArgs e)
+		private void DrawPentagonShapeOnCurrentMousePosition(object sender, EventArgs e)
+		{
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+			dialogProcessor.AddPentagon(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
+			viewPort.Invalidate();
+		}
+
+		private void RotateShapeButton(object sender, EventArgs e)
         {
-			dialogProcessor.RotateShape(int.Parse(angleTextBox.Text));
-			//dialogProcessor.RotateShape(45);
-			statusBar.Items[0].Text = "Последно действие: Ротация на фигура";
+			int angle;
+
+			if (int.TryParse(angleTextBox.Text, out angle))
+			{
+				dialogProcessor.RotateShape(angle);
+				statusBar.Items[0].Text = "Последно действие: Ротация на фигура";
+			} 
+			
 			viewPort.Invalidate();
 		}
 
         private void ScaleShapeButton(object sender, EventArgs e)
         {
-			dialogProcessor.ScaleShape(1.2f, 1.2f);
-			statusBar.Items[0].Text = "Последно действие: Мащабиране на фигура";
+			float scaleFactor;
+			
+			if(float.TryParse(scaleBox.Text, out scaleFactor))
+            {
+				dialogProcessor.ScaleShape(scaleFactor, scaleFactor);
+				statusBar.Items[0].Text = "Последно действие: Мащабиране на фигура";
+			}
+
+
+		
 			viewPort.Invalidate();
 		}
 
@@ -253,12 +325,21 @@ namespace Draw
 
         private void DrawTriangleShapeButtonClick(object sender, EventArgs e)
         {
-			dialogProcessor.AddRandomTriangle(int.Parse(strokeWidthTextBox.Text));
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = true;
+			dialogProcessor.AddTriangle(int.Parse(strokeWidthTextBox.Text));
 			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
 			viewPort.Invalidate();
 		}
 
-        private void ViewPortKeyDown(object sender, KeyEventArgs e)
+		private void DrawTriangleShapeOnCurrentMousePosition(object sender, EventArgs e)
+		{
+			dialogProcessor.DrawSpecs.ShouldDrawOnRandomPosition = false;
+			dialogProcessor.AddTriangle(int.Parse(strokeWidthTextBox.Text));
+			statusBar.Items[0].Text = "Последно действие: Рисуване на звезда";
+			viewPort.Invalidate();
+		}
+
+		private void ViewPortKeyDown(object sender, KeyEventArgs e)
         {
 
             if (Commands.IsCreateGroupShapesCommandClicked(e))
@@ -399,6 +480,27 @@ namespace Draw
 			creatShapeOnCurrentPosition
 				.DropDownItems.Add("Star", null, DrawStarShapeOnCurrentMousePositionButton);
 
+			creatShapeOnCurrentPosition
+				.DropDownItems.Add("Square", null, DrawSquareShapeOnCurrentMousePosition);
+
+			creatShapeOnCurrentPosition
+				.DropDownItems.Add("Rectangle", null, DrawRectangleOnCurrentMousePosition);
+				
+			creatShapeOnCurrentPosition
+				.DropDownItems.Add("Pentagon", null, DrawPentagonShapeOnCurrentMousePosition);
+
+			creatShapeOnCurrentPosition
+				.DropDownItems.Add("Ellipse", null, DrawEllipseShapeOnCurrentMousePosition);
+
+			creatShapeOnCurrentPosition
+				.DropDownItems.Add("Triangle", null, DrawTriangleShapeOnCurrentMousePosition);
+
+			creatShapeOnCurrentPosition
+				.DropDownItems.Add("Circle", null, DrawCircleShapeOnCurrentMousePosition);
+			
+			creatShapeOnCurrentPosition
+				.DropDownItems.Add("Line", null, DrawLineShapeOnCurrentMousePosition);
+
 			creatShapeOnRandomPosition
 				.DropDownItems.Add("Rectangle", null,
 				new EventHandler(DrawRectangleSpeedButtonClick));
@@ -428,7 +530,7 @@ namespace Draw
 				new EventHandler(DrawCircleShapeButtonClick));
 
 			creatShapeOnRandomPosition
-				.DropDownItems.Add("New Line", null,
+				.DropDownItems.Add("Line", null,
 				new EventHandler(DrawLineButtonClick));
 
 			contextMenuStrip1.Items.Add(creatShapeOnRandomPosition);
@@ -551,7 +653,7 @@ namespace Draw
 			TextBox textBoxForY = new TextBox();
 			ComboBox comboBox = new ComboBox();
 			comboBox.Items.AddRange(new string[] { 
-				"Line", "Ellipse", "Rectangle", 
+				"Line", "Ellipse", "Rectangle", "Square",
 				"Star", "Triangle", "Cicle", "Pentagon" 
 			});
 
@@ -618,35 +720,44 @@ namespace Draw
 
 		private void DrawSelectedShape(object sender, EventArgs e, string selectedShape)
         {
+			if(selectedShape == null)
+            {
+				return;
+            }
 
 			if (selectedShape.Equals("Line"))
 			{
-				DrawLineButtonClick(sender, e);
+				DrawLineShapeOnCurrentMousePosition(sender, e);
 			}
 
 			if (selectedShape.Equals("Ellipse"))
 			{
-				DrawLineButtonClick(sender, e);
+				DrawEllipseShapeOnCurrentMousePosition(sender, e);
 			}
 
 			if (selectedShape.Equals("Rectangle"))
 			{
-				DrawLineButtonClick(sender, e);
+				DrawRectangleOnCurrentMousePosition(sender, e);
+			}
+			
+			if (selectedShape.Equals("Square"))
+			{
+				DrawSquareShapeOnCurrentMousePosition(sender, e);
 			}
 
 			if (selectedShape.Equals("Triangle"))
 			{
-				DrawLineButtonClick(sender, e);
+				DrawTriangleShapeOnCurrentMousePosition(sender, e);
 			}
 
 			if (selectedShape.Equals("Cicle"))
 			{
-				DrawLineButtonClick(sender, e);
+				DrawCircleShapeOnCurrentMousePosition(sender, e);
 			}
 
 			if (selectedShape.Equals("Pentagon"))
 			{
-				DrawLineButtonClick(sender, e);
+				DrawPentagonShapeOnCurrentMousePosition(sender, e);
 			}
 
 			if (selectedShape.Equals("Star"))
@@ -655,5 +766,44 @@ namespace Draw
 			}
 
 		}
+
+        private void SetRGBAColor_Click(object sender, EventArgs e)
+        {
+			int red, green, blue, alpha;
+
+			if (int.TryParse(redColorBox.Text, out red) &&
+				int.TryParse(greenColorBox.Text, out green) &&
+				int.TryParse(blueColorBox.Text, out blue) && 
+				int.TryParse(alphaColorBox.Text, out alpha))
+			{
+				if(red < 0 || green > 255 || green < 0 || green > 255 ||
+					blue < 0 || blue > 255 || alpha < 0 || alpha > 255)
+                {
+					viewPort.Invalidate();
+					return;
+                }
+
+
+				dialogProcessor.SetFillColor(Color.FromArgb(alpha, red, green, blue));
+				statusBar.Items[0].Text = "Последно действие: Ротация на фигура";
+			}
+
+			viewPort.Invalidate();
+		}
+
+        private void RotateAt90Degree(object sender, EventArgs e)
+        {
+			dialogProcessor.RotateShape(90);
+			viewPort.Invalidate();
+		}
+
+        private void SetName(object sender, EventArgs e)
+        {
+			if(dialogProcessor.SelectedShapesCollection.Count > 0)
+            {
+				dialogProcessor.SelectedShapesCollection.ForEach(s => s.Name = nameBox.Text);
+				
+			}
+        }
     }
 }

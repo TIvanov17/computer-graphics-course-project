@@ -17,13 +17,13 @@ namespace Draw
 				get => base.TransformationMatrix;
 				set 
 				{
-					base.TransformationMatrix.Matrix.Multiply(value.Matrix);
-
 					foreach (Shape currentSubShape in SubShapes)
 					{
 						currentSubShape.TransformationMatrix.Matrix.Multiply(value.Matrix);
 					}
-				}
+
+					base.TransformationMatrix.Matrix.Multiply(value.Matrix);
+			}
 			}
 
 		public override Color FillColor

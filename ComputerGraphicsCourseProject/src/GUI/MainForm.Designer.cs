@@ -78,10 +78,25 @@
             this.uploadFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewPort = new Draw.DoubleBufferedPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.angleTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.scaleBox = new System.Windows.Forms.TextBox();
+            this.viewPort = new Draw.DoubleBufferedPanel();
+            this.redColorBox = new System.Windows.Forms.TextBox();
+            this.greenColorBox = new System.Windows.Forms.TextBox();
+            this.blueColorBox = new System.Windows.Forms.TextBox();
+            this.alphaColorBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.nameBox = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.nameLabel = new System.Windows.Forms.Label();
             this.mainMenu.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.statusBar.SuspendLayout();
@@ -99,7 +114,7 @@
             this.helpToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(693, 24);
+            this.mainMenu.Size = new System.Drawing.Size(893, 24);
             this.mainMenu.TabIndex = 1;
             this.mainMenu.Text = "menuStrip1";
             // 
@@ -253,7 +268,7 @@
             this.currentStatusLabel});
             this.statusBar.Location = new System.Drawing.Point(0, 401);
             this.statusBar.Name = "statusBar";
-            this.statusBar.Size = new System.Drawing.Size(693, 22);
+            this.statusBar.Size = new System.Drawing.Size(893, 22);
             this.statusBar.TabIndex = 2;
             this.statusBar.Text = "statusStrip1";
             // 
@@ -283,7 +298,7 @@
             this.toolStripButton3});
             this.speedMenu.Location = new System.Drawing.Point(0, 24);
             this.speedMenu.Name = "speedMenu";
-            this.speedMenu.Size = new System.Drawing.Size(693, 25);
+            this.speedMenu.Size = new System.Drawing.Size(893, 25);
             this.speedMenu.TabIndex = 3;
             this.speedMenu.Text = "toolStrip1";
             // 
@@ -354,7 +369,7 @@
             this.drawTriangleSpeedButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.drawTriangleSpeedButton.Name = "drawTriangleSpeedButton";
             this.drawTriangleSpeedButton.Size = new System.Drawing.Size(23, 22);
-            this.drawTriangleSpeedButton.Text = "Draw Star";
+            this.drawTriangleSpeedButton.Text = "Draw Triangle";
             this.drawTriangleSpeedButton.Click += new System.EventHandler(this.DrawTriangleShapeButtonClick);
             // 
             // starShapeButton
@@ -364,7 +379,7 @@
             this.starShapeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.starShapeButton.Name = "starShapeButton";
             this.starShapeButton.Size = new System.Drawing.Size(23, 22);
-            this.starShapeButton.Text = "toolStripButton3";
+            this.starShapeButton.Text = "Draw Star";
             this.starShapeButton.Click += new System.EventHandler(this.DrawStarShapeButton);
             // 
             // toolStripButton1
@@ -434,7 +449,7 @@
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Text = "Draw Line";
             this.toolStripButton2.Click += new System.EventHandler(this.DrawLineButtonClick);
             // 
             // toolStripButton3
@@ -444,12 +459,12 @@
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
             this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripButton3.Text = "Enter Position";
             this.toolStripButton3.Click += new System.EventHandler(this.NewForm);
             // 
             // strokeWidthTextBox
             // 
-            this.strokeWidthTextBox.Location = new System.Drawing.Point(553, 29);
+            this.strokeWidthTextBox.Location = new System.Drawing.Point(506, 26);
             this.strokeWidthTextBox.Name = "strokeWidthTextBox";
             this.strokeWidthTextBox.Size = new System.Drawing.Size(26, 20);
             this.strokeWidthTextBox.TabIndex = 5;
@@ -501,24 +516,10 @@
             this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             // 
-            // viewPort
-            // 
-            this.viewPort.ContextMenuStrip = this.contextMenuStrip1;
-            this.viewPort.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.viewPort.Location = new System.Drawing.Point(0, 49);
-            this.viewPort.Name = "viewPort";
-            this.viewPort.Size = new System.Drawing.Size(693, 352);
-            this.viewPort.TabIndex = 4;
-            this.viewPort.Paint += new System.Windows.Forms.PaintEventHandler(this.ViewPortPaint);
-            this.viewPort.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ViewPortKeyDown);
-            this.viewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseDown);
-            this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
-            this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(509, 32);
+            this.label2.Location = new System.Drawing.Point(462, 29);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 10;
@@ -527,7 +528,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(423, 32);
+            this.label3.Location = new System.Drawing.Point(394, 29);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 11;
@@ -535,18 +536,174 @@
             // 
             // angleTextBox
             // 
-            this.angleTextBox.Location = new System.Drawing.Point(463, 29);
+            this.angleTextBox.Location = new System.Drawing.Point(434, 25);
             this.angleTextBox.Name = "angleTextBox";
             this.angleTextBox.Size = new System.Drawing.Size(22, 20);
             this.angleTextBox.TabIndex = 12;
             this.angleTextBox.Text = "45";
             this.angleTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(548, 30);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Scale";
+            // 
+            // scaleBox
+            // 
+            this.scaleBox.Location = new System.Drawing.Point(588, 25);
+            this.scaleBox.Name = "scaleBox";
+            this.scaleBox.Size = new System.Drawing.Size(22, 20);
+            this.scaleBox.TabIndex = 14;
+            this.scaleBox.Text = "1,2";
+            // 
+            // viewPort
+            // 
+            this.viewPort.ContextMenuStrip = this.contextMenuStrip1;
+            this.viewPort.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.viewPort.Location = new System.Drawing.Point(0, 49);
+            this.viewPort.Name = "viewPort";
+            this.viewPort.Size = new System.Drawing.Size(893, 352);
+            this.viewPort.TabIndex = 4;
+            this.viewPort.Paint += new System.Windows.Forms.PaintEventHandler(this.ViewPortPaint);
+            this.viewPort.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ViewPortKeyDown);
+            this.viewPort.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseDown);
+            this.viewPort.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseMove);
+            this.viewPort.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ViewPortMouseUp);
+            // 
+            // redColorBox
+            // 
+            this.redColorBox.Location = new System.Drawing.Point(633, 22);
+            this.redColorBox.Name = "redColorBox";
+            this.redColorBox.Size = new System.Drawing.Size(21, 20);
+            this.redColorBox.TabIndex = 15;
+            // 
+            // greenColorBox
+            // 
+            this.greenColorBox.Location = new System.Drawing.Point(669, 22);
+            this.greenColorBox.Name = "greenColorBox";
+            this.greenColorBox.Size = new System.Drawing.Size(24, 20);
+            this.greenColorBox.TabIndex = 16;
+            // 
+            // blueColorBox
+            // 
+            this.blueColorBox.Location = new System.Drawing.Point(706, 22);
+            this.blueColorBox.Name = "blueColorBox";
+            this.blueColorBox.Size = new System.Drawing.Size(24, 20);
+            this.blueColorBox.TabIndex = 17;
+            // 
+            // alphaColorBox
+            // 
+            this.alphaColorBox.Location = new System.Drawing.Point(743, 22);
+            this.alphaColorBox.Name = "alphaColorBox";
+            this.alphaColorBox.Size = new System.Drawing.Size(22, 20);
+            this.alphaColorBox.TabIndex = 18;
+            this.alphaColorBox.Text = "255";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(630, 46);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(22, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "red";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(666, 46);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "green";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(706, 46);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(27, 13);
+            this.label6.TabIndex = 21;
+            this.label6.Text = "blue";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(752, 49);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(13, 13);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "a";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(771, 20);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(36, 23);
+            this.button1.TabIndex = 23;
+            this.button1.Text = "Set";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.SetRGBAColor_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(0, 342);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 24;
+            this.button2.Text = "Rotate At 90";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.RotateAt90Degree);
+            // 
+            // nameBox
+            // 
+            this.nameBox.Location = new System.Drawing.Point(0, 378);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(75, 20);
+            this.nameBox.TabIndex = 25;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(92, 374);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 26;
+            this.button3.Text = "Set Name";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.SetName);
+            // 
+            // nameLabel
+            // 
+            this.nameLabel.AutoSize = true;
+            this.nameLabel.Location = new System.Drawing.Point(16, 53);
+            this.nameLabel.Name = "nameLabel";
+            this.nameLabel.Size = new System.Drawing.Size(0, 13);
+            this.nameLabel.TabIndex = 27;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(693, 423);
+            this.ClientSize = new System.Drawing.Size(893, 423);
+            this.Controls.Add(this.nameLabel);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.nameBox);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.alphaColorBox);
+            this.Controls.Add(this.blueColorBox);
+            this.Controls.Add(this.greenColorBox);
+            this.Controls.Add(this.redColorBox);
+            this.Controls.Add(this.scaleBox);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.angleTextBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -630,5 +787,20 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox angleTextBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox scaleBox;
+        private System.Windows.Forms.TextBox redColorBox;
+        private System.Windows.Forms.TextBox greenColorBox;
+        private System.Windows.Forms.TextBox blueColorBox;
+        private System.Windows.Forms.TextBox alphaColorBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox nameBox;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label nameLabel;
     }
 }

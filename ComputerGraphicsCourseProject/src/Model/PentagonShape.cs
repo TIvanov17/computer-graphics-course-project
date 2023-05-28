@@ -22,10 +22,13 @@ namespace Draw.src.Model
 
 		public override bool Contains(PointF point)
 		{
+			PointF[] pointsArray = { point };
 
+			TransformationMatrix.Matrix.Invert();
+			TransformationMatrix.Matrix.TransformPoints(pointsArray);
+			TransformationMatrix.Matrix.Invert();
 
-			PointF startPoint = point;
-
+			PointF startPoint = pointsArray[0];
 			double sum = 0;
 
 			for (int i = 0; i < points.Length; i++)

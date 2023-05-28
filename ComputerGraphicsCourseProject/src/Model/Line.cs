@@ -16,8 +16,20 @@ namespace Draw.src.Model
         {
         }
 
+        public override bool Contains(PointF point)
+        {
+			PointF[] pointsArray = { point };
 
-		public override void DrawSelf(Graphics grfx)
+			TransformationMatrix.Matrix.Invert();
+			TransformationMatrix.Matrix.TransformPoints(pointsArray);
+			TransformationMatrix.Matrix.Invert();
+
+			return base.Contains(pointsArray[0]);
+		}
+
+
+
+        public override void DrawSelf(Graphics grfx)
 		{
 
 			base.DrawSelf(grfx);

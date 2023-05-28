@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace Draw
 {
@@ -29,7 +30,6 @@ namespace Draw
 			TransformationMatrix.Matrix.TransformPoints(pointsArray);
 			TransformationMatrix.Matrix.Invert();
 
-			//TransformationMatrix.Matrix.TransformPoints(new PointF[] { point });
 			return base.Contains(pointsArray[0]);
 		}
 		
@@ -37,8 +37,11 @@ namespace Draw
 		{
 			
 			base.DrawSelf(grfx);
-			// set opacity value to current fill color
+
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
+
+			var state = grfx.Save();
+
 			grfx.Transform = TransformationMatrix.Matrix;
 
 			grfx.FillRectangle(
@@ -56,6 +59,8 @@ namespace Draw
 					Rectangle.Width, 
 					Rectangle.Height
 			);
+
+			grfx.Restore(state);
 		}
 
 		public override object Clone()

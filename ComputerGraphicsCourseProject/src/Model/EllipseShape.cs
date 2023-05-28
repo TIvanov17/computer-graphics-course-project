@@ -17,14 +17,20 @@ namespace Draw.src.Model
 
 		public override bool Contains(PointF point)
 		{
+			PointF[] pointsArray = { point };
+
+			TransformationMatrix.Matrix.Invert();
+			TransformationMatrix.Matrix.TransformPoints(pointsArray);
+			TransformationMatrix.Matrix.Invert();
+
 			float width = Rectangle.Width / 2;
 			float height = Rectangle.Height / 2;
 
 			float centerX = Rectangle.X + width;
 			float centerY = Rectangle.Y + height;
 
-			bool isPointInsideEllipse = (Math.Pow(point.X - centerX, 2)) / (width * width)
-				+ (Math.Pow(point.Y - centerY, 2)) / ( height * height ) <= 1;
+			bool isPointInsideEllipse = (Math.Pow(pointsArray[0].X - centerX, 2)) / (width * width)
+				+ (Math.Pow(pointsArray[0].Y - centerY, 2)) / ( height * height ) <= 1;
 
 			return isPointInsideEllipse;
 		}
@@ -36,7 +42,12 @@ namespace Draw.src.Model
 
 			// set opacity value to current fill color
 			FillColor = Color.FromArgb(OpacityValue, FillColor);
+
+			var state = grfx.Save();
+
+
 			grfx.Transform = TransformationMatrix.Matrix;
+
 			grfx.FillEllipse(
 					new SolidBrush(FillColor),
 					Rectangle.X,
@@ -52,6 +63,8 @@ namespace Draw.src.Model
 					Rectangle.Width,
 					Rectangle.Height
 			);
+
+			grfx.Restore(state);
 		}
 		public override object Clone()
 		{
